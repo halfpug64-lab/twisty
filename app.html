@@ -154,29 +154,27 @@ button:focus-visible,.cell:focus-visible{outline:3px solid var(--ink);outline-of
 .toast{position:fixed;left:50%;top:calc(18px + env(safe-area-inset-top,0px));transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:999px;font-weight:800;font-size:15px;z-index:60;animation:up .2s;max-width:calc(100% - 32px);text-align:center}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 @media (max-width:380px){.pill{font-size:23px}.key{height:50px;font-size:19px}}
-/* Wide screens (iPhone Duo opened, iPads): split into two panes with a clear gap down the middle so nothing sits on the fold */
-@media (min-width:700px){
-  #app{--crease:72px;max-width:1180px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);column-gap:var(--crease)}
-  .bar{grid-column:1/-1}
-  #home{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:var(--crease);
+/* iPhone Duo opened: split into two panes with a clear gap down the middle so nothing sits on the fold. Only turned on by the check in the script below. */
+html.duo #app{--crease:72px;max-width:1180px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);column-gap:var(--crease)}
+html.duo .bar{grid-column:1/-1}
+html.duo #home{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:var(--crease);
     grid-template-areas:"hero levels" "foot levels" "learn levels";grid-template-rows:auto auto 1fr;align-content:center;padding-block:12px 32px}
-  .hero{grid-area:hero;align-self:end}
-  .hero h1{font-size:clamp(64px,8vw,96px)}
-  .hero p{font-size:20px}
-  .levels{grid-area:levels;align-self:center}
-  .homefoot{grid-area:foot;font-size:17px;margin-top:22px}
-  .learn{grid-area:learn;margin-top:14px;justify-self:start;align-self:start}
-  #play{grid-column:1}
-  .playscroll{justify-content:center}
-  #kb{grid-column:2;grid-row:2;align-self:center;padding-block:0 max(16px,env(safe-area-inset-bottom,0px));gap:12px}
-  .key{max-width:none;height:60px;font-size:24px}
-  .key.wide{max-width:none}
-  #app.is-solved #play{grid-column:1/-1}
-  #app.is-solved .playscroll{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:var(--crease);align-content:center;justify-items:center;row-gap:26px}
-  #app.is-solved .playscroll > *{grid-column:1}
-  #app.is-solved #done{grid-column:2;grid-row:1/span 4;align-self:center}
-  .donecard .why{font-size:19px}
-}
+html.duo .hero{grid-area:hero;align-self:end}
+html.duo .hero h1{font-size:clamp(64px,8vw,96px)}
+html.duo .hero p{font-size:20px}
+html.duo .levels{grid-area:levels;align-self:center}
+html.duo .homefoot{grid-area:foot;font-size:17px;margin-top:22px}
+html.duo .learn{grid-area:learn;margin-top:14px;justify-self:start;align-self:start}
+html.duo #play{grid-column:1}
+html.duo .playscroll{justify-content:center}
+html.duo #kb{grid-column:2;grid-row:2;align-self:center;padding-block:0 max(16px,env(safe-area-inset-bottom,0px));gap:12px}
+html.duo .key{max-width:none;height:60px;font-size:24px}
+html.duo .key.wide{max-width:none}
+html.duo #app.is-solved #play{grid-column:1/-1}
+html.duo #app.is-solved .playscroll{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:var(--crease);align-content:center;justify-items:center;row-gap:26px}
+html.duo #app.is-solved .playscroll > *{grid-column:1}
+html.duo #app.is-solved #done{grid-column:2;grid-row:1/span 4;align-self:center}
+html.duo .donecard .why{font-size:19px}
 </style>
 
 <div id="app">
@@ -617,6 +615,22 @@ function share(){
   const fallback=()=>{ const ta=document.createElement("textarea"); ta.value=text; document.body.appendChild(ta); ta.select(); let ok=false; try{ ok=document.execCommand("copy"); }catch(e){} ta.remove(); toast(ok?"Result copied":"Copy failed. Select and copy the score by hand."); };
   try{ navigator.clipboard.writeText(text).then(()=>toast("Result copied"),fallback); }catch(e){ fallback(); }
 }
+
+/* ---------- iPhone Duo detection ----------
+   Only an iPhone whose screen is bigger than any normal iPhone gets the two-pane layout.
+   Regular iPhones top out around 440 points on their short side; the opened Duo is far wider.
+   Add #duo to the end of the link to preview the layout on another device. */
+function checkDuo(){
+  const iPhone=/iPhone/.test(navigator.userAgent);
+  const shortSide=Math.min(screen.width,screen.height);
+  const on=(iPhone&&shortSide>=500)||location.hash==="#duo";
+  document.documentElement.classList.toggle("duo",on);
+  if(cur) sizeCells();
+}
+checkDuo();
+window.addEventListener("resize",checkDuo);
+window.addEventListener("orientationchange",checkDuo);
+window.addEventListener("hashchange",checkDuo);
 
 showHome();
 </script>
