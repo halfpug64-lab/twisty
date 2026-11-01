@@ -61,7 +61,8 @@ button:focus-visible,.cell:focus-visible{outline:3px solid var(--ink);outline-of
 .lvl .status.done{background:var(--mint)}
 .homefoot{display:flex;flex-wrap:wrap;gap:10px 18px;font-weight:700;font-size:15px}
 .homefoot b{font-weight:900}
-.bonusbtn{align-self:stretch;height:56px;border-radius:999px;border:3px solid var(--ink);background:var(--butter);box-shadow:4px 4px 0 var(--ink);
+.bonusbtns{display:flex;flex-direction:column;gap:12px}
+.bonusbtn{height:56px;border-radius:999px;border:3px solid var(--ink);background:var(--butter);box-shadow:4px 4px 0 var(--ink);
   font-family:var(--display);font-style:italic;font-weight:900;font-size:22px}
 .bonusbtn:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
 .learn{align-self:flex-start;font-weight:800;text-decoration:underline;text-underline-offset:3px;font-size:15px}
@@ -187,7 +188,8 @@ html.duo .hero h1{font-size:clamp(64px,8vw,96px)}
 html.duo .hero p{font-size:20px}
 html.duo .levels{grid-area:levels;align-self:center}
 html.duo .homefoot{grid-area:foot;font-size:17px;margin-top:22px}
-html.duo .bonusbtn{grid-area:bonus;margin-top:18px;justify-self:start;padding:0 28px}
+html.duo .bonusbtns{grid-area:bonus;margin-top:18px;justify-self:start}
+html.duo .bonusbtn{padding:0 28px}
 html.duo .learn{grid-area:learn;margin-top:14px;justify-self:start;align-self:start}
 html.duo #play{grid-column:1}
 html.duo .playscroll{justify-content:center}
@@ -220,7 +222,7 @@ html.duo .donecard .why{font-size:19px}
     </section>
     <ol class="levels" id="levels"></ol>
     <div class="homefoot" id="homefoot"></div>
-    <button class="bonusbtn" id="bonusBtn" hidden></button>
+    <div class="bonusbtns" id="bonusBtns"></div>
     <button class="learn" id="learnBtn">New to cryptics? Read how they work</button>
   </main>
 
@@ -332,7 +334,7 @@ const CLUES = {
 };
 
 /* One-off bonus set: shows up only on this date, then disappears. */
-const BONUS = {
+const BONUS_ROUNDS = [{
   date: "2026-11-01",
   clues: {
     beginner:   {c:"[d:Fruit] [i:seen in] [f:grape arrangement]", a:"PEAR", t:"Hidden word", x:"“Seen in” means the answer is hiding in the next words: gr(APE AR)rangement contains P-E-A-R, a fruit."},
@@ -341,14 +343,24 @@ const BONUS = {
     hard:       {c:"[f:Donator] [i:spun] into a [d:twister]", a:"TORNADO", t:"Anagram", x:"“Spun” tells you to rearrange DONATOR. The letters make TORNADO, a twister. Fitting for this app."},
     impossible: {c:"[f:Toad] [f:sire] [i:mutated] into [d:space rock]", a:"ASTEROID", t:"Anagram", x:"“Mutated” signals an anagram of TOAD + SIRE. Those eight letters rearrange into ASTEROID, a space rock."},
   }
-};
-let SET = "main";
+}, {
+  date: "2026-11-01",
+  clues: {
+    beginner:   {c:"[d:Tree] [i:hidden in] [f:cloak]", a:"OAK", t:"Hidden word", x:"“Hidden in” means the answer sits inside the next word: cl(OAK). An oak is a tree."},
+    easy:       {c:"[d:Self-satisfied] [f:gums] [i:turned around]", a:"SMUG", t:"Reversal", x:"GUMS turned around reads SMUG, which means self-satisfied."},
+    medium:     {c:"[d:Footwear]: [f:she] [i:keeps] [f:nothing]", a:"SHOE", t:"Container", x:"Nothing = O (it looks like a zero). SHE “keeps” O inside it: SH(O)E = SHOE, footwear."},
+    hard:       {c:"[f:Doctor] has [f:a] [f:mom]: what a [d:fuss]!", a:"DRAMA", t:"Charade", x:"Doctor = DR, then A, then mom = MA. DR + A + MA = DRAMA, which can mean a fuss."},
+    impossible: {c:"[d:Not anywhere]: [f:at the moment] [f:in this spot]", a:"NOWHERE", t:"Charade", x:"At the moment = NOW, in this spot = HERE. NOW + HERE = NOWHERE, not anywhere. The trick is spotting that the answer splits into two everyday words."},
+  }
+}];
+let SET = 0; // 0 = today's clues, 1+ = bonus rounds
 
 /* ---------- date + storage ---------- */
 const MONTHS=["January","February","March","April","May","June","July","August","September","October","November","December"];
 const now=new Date();
 const ymd=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
 const TODAY=ymd(now);
+const TODAY_ROUNDS = BONUS_ROUNDS.map((r,i)=>({...r,n:i+1})).filter(r=>r.date===TODAY);
 const DAYNUM=Math.floor(Date.UTC(now.getFullYear(),now.getMonth(),now.getDate())/864e5);
 const DATELBL=`${now.getDate()} ${MONTHS[now.getMonth()]}, ${now.getFullYear()}`;
 const STORE="twisty-v1";
@@ -357,13 +369,13 @@ try{ DB=JSON.parse(localStorage.getItem(STORE))||DB; if(!DB.days) DB.days={}; }c
 const save=()=>{ try{ localStorage.setItem(STORE,JSON.stringify(DB)); }catch(e){} };
 
 function puzzleFor(levelId){
-  if(SET==="bonus") return BONUS.clues[levelId];
+  if(SET) return BONUS_ROUNDS[SET-1].clues[levelId];
   const pool=CLUES[levelId], off=LEVELS.findIndex(l=>l.id===levelId)*3;
   return pool[(DAYNUM+off)%pool.length];
 }
 function progress(levelId){
   const day=DB.days[TODAY]||(DB.days[TODAY]={});
-  const p=puzzleFor(levelId), key=SET==="bonus"?"bonus-"+levelId:levelId;
+  const p=puzzleFor(levelId), key=SET===0?levelId:SET===1?"bonus-"+levelId:`bonus${SET}-`+levelId;
   if(!day[key]||day[key].a!==p.a){
     day[key]={a:p.a,entry:Array(p.a.length).fill(""),lock:[],hints:0,used:{},solved:false,wrong:0};
   }
@@ -404,9 +416,9 @@ const plural=(n,w)=>`${n} ${w}${n===1?"":"s"}`;
 function showHome(){
   cur=null; closePad(); closeSheet(); $("#app").classList.remove("is-solved");
   $("#home").hidden=false; $("#play").hidden=true; $("#kb").hidden=true; $("#back").hidden=true;
-  $("#dateLbl").textContent=DATELBL; $("#subLbl").textContent=SET==="bonus"?"Bonus clues":"Today's clues";
-  const bb=$("#bonusBtn"); bb.hidden=TODAY!==BONUS.date;
-  bb.textContent=SET==="bonus"?"Back to today's clues":"Play 5 bonus clues · today only";
+  $("#dateLbl").textContent=DATELBL; $("#subLbl").textContent=SET?`Bonus round ${SET}`:"Today's clues";
+  const opts=[...(SET?[{n:0,label:"Back to today's clues"}]:[]),...TODAY_ROUNDS.filter(r=>r.n!==SET).map(r=>({n:r.n,label:`Bonus round ${r.n} · today only`}))];
+  $("#bonusBtns").innerHTML=opts.map(o=>`<button class="bonusbtn" data-set="${o.n}">${o.label}</button>`).join("");
   let solved=0;
   $("#levels").innerHTML=LEVELS.map((l,i)=>{
     const p=puzzleFor(l.id), st=progress(l.id); if(st.solved) solved++;
@@ -419,9 +431,9 @@ function showHome(){
   }).join("");
   save();
   const s=streak();
-  $("#homefoot").innerHTML=`<span><b>${solved}/5</b> ${SET==="bonus"?"bonus solved":"solved today"}</span><span><b>${s}</b> day streak</span>`;
+  $("#homefoot").innerHTML=`<span><b>${solved}/5</b> ${SET?"bonus solved":"solved today"}</span><span><b>${s}</b> day streak</span>`;
 }
-$("#bonusBtn").onclick=()=>{ SET=SET==="bonus"?"main":"bonus"; showHome(); };
+$("#bonusBtns").addEventListener("click",e=>{const b=e.target.closest("[data-set]"); if(b){ SET=+b.dataset.set; showHome(); $("#home").scrollTop=0; }});
 $("#levels").addEventListener("click",e=>{const b=e.target.closest(".lvl"); if(b) openPuzzle(b.dataset.l);});
 
 /* ---------- puzzle ---------- */
