@@ -1,0 +1,607 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Twisty Daily Cryptic</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@1,9..144,800;1,9..144,900&family=Nunito:wght@400;600;700;800;900&display=swap">
+<style>
+:root{
+  /* Layout: one phone-width column on a sky ground; white clue card, chunky answer grid, pill buttons, keyboard pinned at the foot */
+  --sky:#b4d1f8; --mist:#d9e7fc; --paper:#ffffff; --ink:#141414; --slate:#56677e;
+  --pink:#efd3f8; --butter:#fbefb5; --corn:#c9dbfb; --mint:#c6edd1; --rose:#f6c4c4;
+  --body:"Nunito", ui-rounded, system-ui, sans-serif;
+  --display:"Fraunces", Georgia, "Times New Roman", serif;
+  color-scheme: light;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{margin:0;background:var(--sky);color:var(--ink);font-family:var(--body);-webkit-tap-highlight-color:transparent;overscroll-behavior:none}
+button{font:inherit;color:inherit;cursor:pointer;background:none;border:0;padding:0}
+button:focus-visible,.cell:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+#app{height:100%;display:flex;flex-direction:column;max-width:540px;margin:0 auto;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* top bar */
+.bar{display:flex;align-items:center;gap:14px;padding-block:14px 12px}
+.iconbtn{width:44px;height:44px;display:grid;place-items:center;border-radius:50%}
+.iconbtn svg{width:30px;height:30px}
+.bar .meta{flex:1;min-width:0}
+.bar .date{font-weight:800;font-size:19px;line-height:1.2}
+.bar .sub{font-size:14px;font-weight:600;opacity:.85}
+.badge{width:44px;height:40px;border-radius:6px;background:var(--ink);color:var(--paper);display:grid;place-items:center;
+  font-family:var(--display);font-style:italic;font-weight:900;font-size:22px;box-shadow:3px 3px 0 var(--pink)}
+.infobtn{border:3px solid var(--ink);width:42px;height:42px;border-radius:50%;font-weight:900;font-size:20px;font-family:Georgia,serif}
+
+/* home */
+#home{flex:1;overflow-y:auto;padding-block:6px 28px;display:flex;flex-direction:column;gap:22px}
+.hero h1{font-family:var(--display);font-style:italic;font-weight:900;font-size:clamp(46px,14vw,64px);line-height:.95;margin:0;letter-spacing:-.02em}
+.hero p{margin:10px 0 0;font-size:17px;font-weight:600;max-width:34ch}
+.levels{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
+.lvl{width:100%;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:14px;text-align:left;
+  background:var(--paper);border:3px solid var(--ink);border-radius:16px;padding:14px 16px;box-shadow:4px 4px 0 var(--ink);transition:transform .12s}
+.lvl:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
+.lvl .chip{width:46px;height:46px;border-radius:12px;border:3px solid var(--ink);display:grid;place-items:center;font-weight:900;font-size:20px}
+.lvl .name{font-family:var(--display);font-style:italic;font-weight:900;font-size:24px;line-height:1.1}
+.lvl .info{font-size:14px;font-weight:600;color:var(--slate)}
+.lvl .status{font-weight:800;font-size:14px;padding:6px 12px;border-radius:999px;border:2px solid var(--ink);white-space:nowrap}
+.lvl .status.done{background:var(--mint)}
+.homefoot{display:flex;flex-wrap:wrap;gap:10px 18px;font-weight:700;font-size:15px}
+.homefoot b{font-weight:900}
+.learn{align-self:flex-start;font-weight:800;text-decoration:underline;text-underline-offset:3px;font-size:15px}
+
+/* play */
+#play{flex:1;min-height:0;position:relative;display:flex;flex-direction:column}
+.playscroll{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;align-items:center;gap:26px;padding-block:4px 18px}
+.cluecard{width:100%;background:var(--paper);border-radius:16px;padding:18px 22px;font-size:clamp(23px,6.6vw,31px);line-height:1.55;font-weight:500}
+.cluecard .enum{white-space:nowrap}
+.r{border-radius:6px;transition:background-color .3s;-webkit-box-decoration-break:clone;box-decoration-break:clone;padding:0 2px;margin:0 -2px}
+.show-i .r-i{background:var(--pink)}
+.show-f .r-f{background:var(--butter)}
+.show-d .r-d{background:var(--corn)}
+.w{border-radius:4px}
+.tapwords .w{cursor:pointer}
+.tapwords .w:active{background:var(--mist)}
+
+.grid{display:flex;border:4px solid var(--ink);border-radius:9px;overflow:hidden;background:var(--paper)}
+.cell{width:var(--cs,64px);height:var(--cs,64px);border-right:3px solid var(--ink);display:grid;place-items:center;
+  font-weight:900;font-size:calc(var(--cs,64px)*.5);background:var(--paper);cursor:pointer;user-select:none;transition:background-color .2s}
+.cell:last-child{border-right:0}
+.cell.sel{background:var(--pink)}
+.cell.lock{background:var(--butter)}
+.cell.lock.sel{background:#f3dfa0}
+.solved .cell{background:var(--mint)}
+.grid.shake{animation:shake .4s}
+@keyframes shake{20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
+.solved .cell{animation:pop .45s backwards}
+@keyframes pop{0%{transform:scale(.6)}70%{transform:scale(1.08)}100%{transform:scale(1)}}
+
+.dots{display:flex;gap:9px;justify-content:center}
+.dotcol{display:flex;flex-direction:column;align-items:center;gap:4px;width:34px}
+.dot{width:30px;height:30px;border-radius:50%;background:var(--mist)}
+.dot.used{background:var(--ink)}
+.dot.now{background:transparent;border:4px solid var(--ink);width:34px;height:34px;margin:-2px 0}
+.dot.used.now{background:var(--ink)}
+.parlbl{font-family:var(--display);font-style:italic;font-weight:900;font-size:20px;height:24px;line-height:24px}
+
+.actions{display:flex;align-items:center;justify-content:center;gap:16px;width:100%}
+.scrib{width:62px;height:62px;flex:none;border-radius:50%;border:3px solid var(--ink);background:var(--corn);display:grid;place-items:center;box-shadow:4px 4px 0 var(--ink)}
+.scrib svg{width:30px;height:30px}
+.pill{height:62px;padding:0 20px;flex:1;max-width:220px;border-radius:999px;font-family:var(--display);font-style:italic;font-weight:900;font-size:27px;border:3px solid var(--ink)}
+.pill.hints{background:var(--butter);box-shadow:5px 5px 0 var(--ink)}
+.pill.check{border-color:var(--slate);color:var(--slate)}
+.pill.check.ready{background:var(--ink);color:var(--paper);border-color:var(--ink);box-shadow:5px 5px 0 var(--slate)}
+.pill:active,.scrib:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
+
+/* solved panel */
+.donecard{width:100%;background:var(--paper);border:3px solid var(--ink);border-radius:18px;padding:18px 20px;box-shadow:5px 5px 0 var(--ink);display:flex;flex-direction:column;gap:12px}
+.donecard h2{margin:0;font-family:var(--display);font-style:italic;font-weight:900;font-size:32px}
+.donecard .score{font-weight:800;font-size:16px}
+.donecard .why{font-size:17px;line-height:1.5;margin:0}
+.legend{display:flex;flex-wrap:wrap;gap:8px;font-size:13px;font-weight:800}
+.legend span{padding:3px 9px;border-radius:6px}
+.donebtns{display:flex;gap:12px;flex-wrap:wrap}
+.donebtns .pill{height:52px;font-size:22px;max-width:none}
+.pill.alt{background:var(--paper)}
+
+/* keyboard */
+#kb{padding-block:8px max(10px,env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:9px}
+.kr{display:flex;gap:6px;justify-content:center}
+.key{flex:1;max-width:52px;height:54px;background:var(--paper);border-radius:8px;box-shadow:0 2px 0 rgba(20,20,20,.18);font-size:22px;font-weight:600;user-select:none;touch-action:manipulation}
+.key:active{background:var(--mist)}
+.key.wide{max-width:76px;flex:1.4}
+.key svg{width:24px;height:24px;vertical-align:middle}
+
+/* sheets */
+.scrim{position:fixed;inset:0;background:rgba(20,20,20,.18);z-index:40;display:flex;align-items:flex-end;justify-content:center;
+  padding:16px max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.sheet{width:100%;max-width:520px;max-height:85%;overflow-y:auto;background:var(--paper);border:4px solid var(--ink);border-radius:24px;box-shadow:6px 6px 0 var(--ink);padding:20px 24px 26px;animation:up .22s ease-out}
+@keyframes up{from{transform:translateY(30px);opacity:.4}}
+.sheethead{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-size:19px;font-weight:600}
+.x{width:44px;height:44px;display:grid;place-items:center}
+.x svg{width:30px;height:30px}
+.opt{display:block;width:100%;text-align:left;padding:16px 0;font-family:var(--display);font-style:italic;font-weight:900;font-size:30px}
+.opt span{padding:0 6px;background:linear-gradient(transparent 62%,var(--hl) 62%)}
+.opt[disabled]{cursor:default}
+.opt[disabled] span{opacity:.35;text-decoration:line-through;text-decoration-thickness:3px}
+.opt small{display:block;font-family:var(--body);font-style:normal;font-weight:600;font-size:14px;color:var(--slate);padding-left:6px;margin-top:2px}
+.sep{border:0;border-top:2px solid #eef0f4;margin:6px 0}
+.sheet.info h3{font-family:var(--display);font-style:italic;font-weight:900;font-size:24px;margin:18px 0 6px}
+.sheet.info p,.sheet.info li{font-size:16px;line-height:1.55;max-width:60ch}
+.sheet.info ul{padding-left:20px;margin:6px 0}
+.mark{padding:1px 6px;border-radius:5px;font-weight:800}
+
+/* scribble pad */
+#pad{position:absolute;inset:0 0 6px;z-index:20;background:var(--paper);border-radius:18px;display:flex;flex-direction:column;padding:16px 18px;gap:12px;box-shadow:0 4px 0 rgba(20,20,20,.08)}
+.padhead{display:flex;align-items:center;gap:12px}
+.padtitle{display:flex;align-items:center;gap:10px;flex:1;font-weight:900;font-size:18px;line-height:1.05}
+.padtitle i{width:46px;height:46px;border-radius:50%;background:var(--corn);display:grid;place-items:center}
+.padtitle i svg{width:24px;height:24px}
+.tool{height:46px;min-width:58px;padding:0 12px;border-radius:999px;background:#eef0f4;display:flex;align-items:center;justify-content:center;gap:8px}
+.tool svg{width:24px;height:24px}
+.tool[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+#padclue{font-size:clamp(20px,5.6vw,26px);line-height:1.5}
+.tiles{flex:1;position:relative;min-height:150px;touch-action:none}
+.tile{position:absolute;left:0;top:0;width:48px;height:48px;border:3px solid var(--ink);border-radius:9px;background:var(--butter);display:grid;place-items:center;
+  font-weight:900;font-size:24px;touch-action:none;user-select:none;cursor:grab;transition:transform .25s}
+.tile.drag{transition:none;z-index:5;cursor:grabbing;box-shadow:3px 3px 0 var(--ink)}
+.padhelp{background:#f0f1f3;border-radius:12px;padding:12px 16px;font-size:15px;line-height:1.45}
+.padhelp p{margin:4px 0}
+.trash{position:absolute;right:0;bottom:0;width:58px;height:58px;border-radius:50%;border:3px dashed var(--slate);display:grid;place-items:center;color:var(--slate);transition:all .15s;background:var(--paper)}
+.trash svg{width:26px;height:26px}
+.trash.hot{background:var(--rose);border-style:solid;border-color:var(--ink);color:var(--ink);transform:scale(1.12)}
+
+.toast{position:fixed;left:50%;top:calc(18px + env(safe-area-inset-top,0px));transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:999px;font-weight:800;font-size:15px;z-index:60;animation:up .2s;max-width:calc(100% - 32px);text-align:center}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media (max-width:380px){.pill{font-size:23px}.key{height:50px;font-size:19px}}
+</style>
+</head>
+<body>
+
+<div id="app">
+  <header class="bar">
+    <button class="iconbtn" id="back" aria-label="Back to today's levels" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12H5M11 5l-7 7 7 7"/></svg>
+    </button>
+    <div class="meta"><div class="date" id="dateLbl"></div><div class="sub" id="subLbl"></div></div>
+    <button class="infobtn" id="infoBtn" aria-label="How to play">i</button>
+    <div class="badge" aria-hidden="true">tw</div>
+  </header>
+
+  <main id="home">
+    <section class="hero">
+      <h1>twisty</h1>
+      <p>Five cryptic clues a day, one at every level. Fresh set at midnight.</p>
+    </section>
+    <ol class="levels" id="levels"></ol>
+    <div class="homefoot" id="homefoot"></div>
+    <button class="learn" id="learnBtn">New to cryptics? Read how they work</button>
+  </main>
+
+  <main id="play" hidden>
+    <div class="playscroll">
+      <div class="cluecard" id="clue"></div>
+      <div class="grid" id="grid" role="group" aria-label="Answer"></div>
+      <div class="dots" id="dots" aria-label="Hints used"></div>
+      <div class="actions" id="actions">
+        <button class="scrib" id="scribBtn" aria-label="Open scribble pad">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 11c3-5 7-6 5-2s-6 9-3 8 8-9 9-7-5 7-3 7 4-3 5-4"/></svg>
+        </button>
+        <button class="pill hints" id="hintBtn">hints</button>
+        <button class="pill check" id="checkBtn">check</button>
+      </div>
+      <div class="donecard" id="done" hidden></div>
+    </div>
+
+    <section id="pad" hidden aria-label="Scribble pad">
+      <div class="padhead">
+        <div class="padtitle"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 11c3-5 7-6 5-2s-6 9-3 8 8-9 9-7-5 7-3 7 4-3 5-4"/></svg></i>Scribble<br>pad</div>
+        <button class="tool" id="shuffleBtn" aria-label="Shuffle letters">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h4c4 0 6 10 10 10h4M3 17h4c1.6 0 2.8-1.6 3.8-3.4M13.2 10.4C14.2 8.6 15.4 7 17 7h4M18 4l3 3-3 3M18 14l3 3-3 3"/></svg>
+        </button>
+        <button class="tool" id="wheelBtn" aria-pressed="false" aria-label="Arrange letters in a wheel">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><circle cx="12" cy="12" r="8"/></svg>
+        </button>
+        <button class="x" id="padClose" aria-label="Close scribble pad"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg></button>
+      </div>
+      <div id="padclue" class="tapwords"></div>
+      <div class="tiles" id="tiles">
+        <div class="padhelp" id="padhelp">
+          <p>Tap words in the clue or type to add letters. Drag them around to test the wordplay.</p>
+          <p>Try the <b>wheel</b> to see what jumps out.</p>
+          <p>Drag a letter onto the <b>bin</b> to delete it. Hold one over the bin to clear everything.</p>
+        </div>
+        <div class="trash" id="trash" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg></div>
+      </div>
+    </section>
+  </main>
+
+  <div id="kb" hidden></div>
+</div>
+
+<script>
+/* ---------- clue bank ----------
+   Markup: [d:...] definition, [i:...] indicator, [f:...] fodder / wordplay pieces */
+const LEVELS = [
+  {id:"beginner",   name:"Beginner",   chip:"var(--mint)",  par:0},
+  {id:"easy",       name:"Easy",       chip:"var(--corn)",  par:0},
+  {id:"medium",     name:"Medium",     chip:"var(--butter)",par:1},
+  {id:"hard",       name:"Hard",       chip:"var(--pink)",  par:1},
+  {id:"impossible", name:"Impossible", chip:"var(--rose)",  par:2},
+];
+const CLUES = {
+  beginner: [
+    {c:"[d:Quiet], [f:listen] [i:badly]", a:"SILENT", t:"Anagram", x:"“Badly” tells you to rearrange LISTEN. The letters make SILENT, which means quiet."},
+    {c:"[d:Bird] [i:seen in] [f:slow lane]", a:"OWL", t:"Hidden word", x:"“Seen in” means the answer is hiding inside the next words: sl(OW L)ane. An owl is a bird."},
+    {c:"[f:Lemon] [i:squeezed] to make a [d:fruit]", a:"MELON", t:"Anagram", x:"“Squeezed” is the signal to rearrange LEMON. You get MELON, a fruit."},
+    {c:"[d:Pet] [i:hiding in] [f:scatter]", a:"CAT", t:"Hidden word", x:"The pet is hiding inside s(CAT)ter."},
+    {c:"[f:Earth] [i:shattered], a [d:vital organ]", a:"HEART", t:"Anagram", x:"“Shattered” tells you to rearrange EARTH. You get HEART, a vital organ."},
+    {c:"[d:Object] to [f:night] [i:out]", a:"THING", t:"Anagram", x:"“Out” signals an anagram of NIGHT, which gives THING, an object."},
+    {c:"[d:Insect] [i:within] [f:giant]", a:"ANT", t:"Hidden word", x:"gi(ANT) has an insect sitting inside it."},
+    {c:"[f:Pots] [i:knocked over]? [d:Halt]!", a:"STOP", t:"Anagram", x:"Knock POTS over and shuffle the letters to get STOP, which means halt."},
+  ],
+  easy: [
+    {c:"[f:Pot] [i:returned] to the [d:summit]", a:"TOP", t:"Reversal", x:"“Returned” means read POT backwards: TOP, the summit."},
+    {c:"[d:Rodents] [i:turning] [f:star]", a:"RATS", t:"Reversal", x:"STAR turned around reads RATS, which are rodents."},
+    {c:"[d:Floor covering]: [f:vehicle] and [f:animal companion]", a:"CARPET", t:"Charade", x:"A charade puts pieces side by side. Vehicle = CAR, animal companion = PET. CAR + PET = CARPET, a floor covering."},
+    {c:"[d:Loathing] [f:cap] and [f:scarlet]", a:"HATRED", t:"Charade", x:"Cap = HAT, scarlet = RED. HAT + RED = HATRED, which means loathing."},
+    {c:"[f:Dad] [i:keeps] [f:in] for [d:decorating material]", a:"PAINT", t:"Container", x:"Dad = PA. PA “keeps” IN inside it: PA(IN)T. Paint is a decorating material."},
+    {c:"[d:Wicked] to [f:live] [i:backwards]", a:"EVIL", t:"Reversal", x:"LIVE written backwards is EVIL, which means wicked."},
+    {c:"[d:Serious] [f:organ of hearing] beside [f:bird's home]", a:"EARNEST", t:"Charade", x:"Organ of hearing = EAR, bird's home = NEST. EAR + NEST = EARNEST, serious."},
+    {c:"[i:Start of] [f:every apple tree]? [d:Consume]!", a:"EAT", t:"First letters", x:"Take the first letter of Every Apple Tree: E, A, T. To eat is to consume."},
+  ],
+  medium: [
+    {c:"[d:Instructor]'s [f:drink] and [f:singer]", a:"TEACHER", t:"Charade", x:"Drink = TEA, singer = CHER. TEA + CHER = TEACHER, an instructor."},
+    {c:"[f:Stressed]? [i:Turn it around] for [d:sweet treats]", a:"DESSERTS", t:"Reversal", x:"Read STRESSED backwards and you get DESSERTS, sweet treats."},
+    {c:"[f:Scheme] with [f:alien] [d:world]", a:"PLANET", t:"Charade", x:"Scheme = PLAN, alien = ET. PLAN + ET = PLANET, a world."},
+    {c:"[d:Sheep], [i:reportedly] [f:you]", a:"EWE", t:"Homophone", x:"“Reportedly” means it sounds like another word. EWE sounds like YOU, and a ewe is a female sheep."},
+    {c:"[f:Finest] [i:keeps] [f:a] [d:monster]", a:"BEAST", t:"Container", x:"Finest = BEST. BEST “keeps” A inside it: BE(A)ST, a monster."},
+    {c:"[d:Poem]'s [f:boy] and [f:fishing gear]", a:"SONNET", t:"Charade", x:"Boy = SON, fishing gear = NET. SON + NET = SONNET, a poem."},
+    {c:"[f:Dirty room] [i:arranged] for [d:students' sleeping quarters]", a:"DORMITORY", t:"Anagram", x:"“Arranged” tells you to shuffle DIRTY ROOM. The letters make DORMITORY."},
+    {c:"[d:Covering for a tree]? [d:Dog's sound]!", a:"BARK", t:"Double definition", x:"Two separate meanings of one word, with no wordplay at all. A tree's covering and a dog's sound are both BARK."},
+    {c:"[d:Musical drama] [i:found in] [f:cooperative]", a:"OPERA", t:"Hidden word", x:"Hidden inside co(OPERA)tive. Opera is musical drama."},
+    {c:"[f:Salt water] [f:boy] gets [d:spring, say]", a:"SEASON", t:"Charade", x:"Salt water = SEA, boy = SON. SEA + SON = SEASON. “Say” flags that spring is just one example of a season."},
+  ],
+  hard: [
+    {c:"[d:Fireplace] [f:core], then [f:hospital]", a:"HEARTH", t:"Charade", x:"Core = HEART, hospital = H (as on road signs). HEART + H = HEARTH, a fireplace."},
+    {c:"[f:Topside] [i:reworked] to [d:put down]", a:"DEPOSIT", t:"Anagram", x:"“Reworked” signals an anagram of TOPSIDE, which gives DEPOSIT, to put down."},
+    {c:"[d:Agreeable] [f:labourer] [i:embraces] [f:learner]", a:"PLEASANT", t:"Container", x:"Labourer = PEASANT, learner = L (as on a learner's sign). PEASANT “embraces” L: P(L)EASANT = PLEASANT, agreeable."},
+    {c:"[d:Card game]: [f:newly-wed] [i:keeps] [f:good]", a:"BRIDGE", t:"Container", x:"Newly-wed = BRIDE, good = G. BRIDE keeps G inside: BRID(G)E = BRIDGE, a card game."},
+    {c:"[f:Old] [f:friend]? It's a [d:draw]", a:"STALEMATE", t:"Charade", x:"Old = STALE, friend = MATE. STALE + MATE = STALEMATE, a draw in chess."},
+    {c:"[f:Sharpen] [f:street], [d:frank]", a:"HONEST", t:"Charade", x:"Sharpen = HONE, street = ST. HONE + ST = HONEST, which means frank."},
+    {c:"[f:Fellow]'s [f:romantic appointment] is an [d:order]", a:"MANDATE", t:"Charade", x:"Fellow = MAN, romantic appointment = DATE. MAN + DATE = MANDATE, an order."},
+    {c:"[d:Prize] [f:drawer] [i:returned]", a:"REWARD", t:"Reversal", x:"DRAWER written backwards is REWARD, a prize."},
+    {c:"[f:Restrain] [i:wildly] to get a [d:sieve]", a:"STRAINER", t:"Anagram", x:"“Wildly” tells you to rearrange RESTRAIN. You get STRAINER, a sieve."},
+  ],
+  impossible: [
+    {c:"[f:Moon starer] [i:working] as [d:scientist]", a:"ASTRONOMER", t:"Anagram", x:"“Working” signals an anagram of MOON STARER, which gives ASTRONOMER. Staring at the moon is literally the job."},
+    {c:"[f:Carthorse] [i:playing] in [d:band]", a:"ORCHESTRA", t:"Anagram", x:"Rearrange CARTHORSE (“playing”) to get ORCHESTRA, a band."},
+    {c:"[f:Listen], [i:losing] [f:hospital], [d:organ]", a:"EAR", t:"Deletion", x:"Listen = HEAR. Take away (“losing”) H for hospital and EAR is left, an organ."},
+    {c:"[f:Persist], [i:oddly], as [d:ministers]", a:"PRIESTS", t:"Anagram", x:"“Oddly” signals an anagram of PERSIST, which gives PRIESTS, ministers."},
+    {c:"[f:The classroom] [i:reorganised] by [d:teacher]", a:"SCHOOLMASTER", t:"Anagram", x:"Rearrange THE CLASSROOM to get SCHOOLMASTER, a teacher. The whole clue also describes the answer."},
+    {c:"[f:Voices rant on] [i:wildly] in [d:chat]", a:"CONVERSATION", t:"Anagram", x:"Shuffle VOICES RANT ON (“wildly”) to get CONVERSATION, a chat."},
+    {c:"[d:Not right]? It's [f:in] [f:correct]!", a:"INCORRECT", t:"Charade", x:"The clue spells out the recipe. Put IN next to CORRECT: IN + CORRECT = INCORRECT, which means not right."},
+    {c:"[f:Stair] [i:missing] [f:one], [d:celebrity]", a:"STAR", t:"Deletion", x:"Take STAIR and remove one (I, the Roman numeral). STAIR minus I = STAR, a celebrity."},
+  ],
+};
+
+/* ---------- date + storage ---------- */
+const MONTHS=["January","February","March","April","May","June","July","August","September","October","November","December"];
+const now=new Date();
+const ymd=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+const TODAY=ymd(now);
+const DAYNUM=Math.floor(Date.UTC(now.getFullYear(),now.getMonth(),now.getDate())/864e5);
+const DATELBL=`${now.getDate()} ${MONTHS[now.getMonth()]}, ${now.getFullYear()}`;
+const STORE="twisty-v1";
+let DB={days:{}};
+try{ DB=JSON.parse(localStorage.getItem(STORE))||DB; if(!DB.days) DB.days={}; }catch(e){}
+const save=()=>{ try{ localStorage.setItem(STORE,JSON.stringify(DB)); }catch(e){} };
+
+function puzzleFor(levelId){
+  const pool=CLUES[levelId], off=LEVELS.findIndex(l=>l.id===levelId)*3;
+  return pool[(DAYNUM+off)%pool.length];
+}
+function progress(levelId){
+  const day=DB.days[TODAY]||(DB.days[TODAY]={});
+  const p=puzzleFor(levelId);
+  if(!day[levelId]||day[levelId].a!==p.a){
+    day[levelId]={a:p.a,entry:Array(p.a.length).fill(""),lock:[],hints:0,used:{},solved:false,wrong:0};
+  }
+  return day[levelId];
+}
+
+/* ---------- helpers ---------- */
+const $=s=>document.querySelector(s);
+const esc=s=>s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function parse(src){
+  const out=[],re=/\[(d|i|f):([^\]]+)\]/g;let last=0,m;
+  while((m=re.exec(src))){ if(m.index>last) out.push({r:null,t:src.slice(last,m.index)}); out.push({r:m[1],t:m[2]}); last=re.lastIndex; }
+  if(last<src.length) out.push({r:null,t:src.slice(last)});
+  return out;
+}
+function clueHTML(p){
+  return parse(p.c).map(s=>{
+    const words=s.t.split(/(\s+)/).map(w=>/\S/.test(w)?`<span class="w">${esc(w)}</span>`:w).join("");
+    return s.r?`<span class="r r-${s.r}">${words}</span>`:words;
+  }).join("")+` <span class="enum">(${p.a.length})</span>`;
+}
+let toastT;
+function toast(msg){
+  document.querySelectorAll(".toast").forEach(t=>t.remove());
+  const t=document.createElement("div");t.className="toast";t.textContent=msg;t.setAttribute("role","status");
+  document.body.appendChild(t);clearTimeout(toastT);toastT=setTimeout(()=>t.remove(),2200);
+}
+function streak(){
+  let n=0;const d=new Date(now);
+  const solvedOn=k=>Object.values(DB.days[k]||{}).some(v=>v.solved);
+  if(!solvedOn(ymd(d))) d.setDate(d.getDate()-1);
+  while(solvedOn(ymd(d))){ n++; d.setDate(d.getDate()-1); }
+  return n;
+}
+const plural=(n,w)=>`${n} ${w}${n===1?"":"s"}`;
+
+/* ---------- home ---------- */
+function showHome(){
+  cur=null; closePad(); closeSheet();
+  $("#home").hidden=false; $("#play").hidden=true; $("#kb").hidden=true; $("#back").hidden=true;
+  $("#dateLbl").textContent=DATELBL; $("#subLbl").textContent="Today's clues";
+  let solved=0;
+  $("#levels").innerHTML=LEVELS.map((l,i)=>{
+    const p=puzzleFor(l.id), st=progress(l.id); if(st.solved) solved++;
+    const status=st.solved?`<span class="status done">${st.hints?plural(st.hints,"hint"):"No hints"}</span>`
+      :`<span class="status">${st.hints||st.entry.some(Boolean)?"Resume":"Play"}</span>`;
+    return `<li><button class="lvl" data-l="${l.id}">
+      <span class="chip" style="background:${l.chip}">${st.solved?"✓":i+1}</span>
+      <span><span class="name">${l.name}</span><br><span class="info">${p.a.length} letters · par ${l.par}</span></span>
+      ${status}</button></li>`;
+  }).join("");
+  save();
+  const s=streak();
+  $("#homefoot").innerHTML=`<span><b>${solved}/5</b> solved today</span><span><b>${s}</b> day streak</span>`;
+}
+$("#levels").addEventListener("click",e=>{const b=e.target.closest(".lvl"); if(b) openPuzzle(b.dataset.l);});
+
+/* ---------- puzzle ---------- */
+let cur=null, sel=0;
+function openPuzzle(levelId){
+  const lvl=LEVELS.find(l=>l.id===levelId);
+  cur={lvl,p:puzzleFor(levelId),st:progress(levelId)};
+  sel=cur.st.entry.findIndex((c,i)=>!c&&!cur.st.lock.includes(i)); if(sel<0) sel=0;
+  pad={tiles:[],wheel:false}; $("#wheelBtn").setAttribute("aria-pressed","false");
+  $("#home").hidden=true; $("#play").hidden=false; $("#back").hidden=false;
+  $("#dateLbl").textContent=DATELBL; $("#subLbl").textContent=`Level: ${lvl.name}`;
+  $(".playscroll").scrollTop=0;
+  renderPuzzle();
+}
+function renderPuzzle(){
+  const {p,st,lvl}=cur;
+  const clue=$("#clue"); clue.innerHTML=clueHTML(p);
+  clue.className="cluecard"+(st.used.i||st.solved?" show-i":"")+(st.used.f||st.solved?" show-f":"")+(st.used.d||st.solved?" show-d":"");
+  sizeCells();
+  const g=$("#grid"); g.classList.toggle("solved",st.solved);
+  g.innerHTML=st.entry.map((ch,i)=>`<div class="cell${i===sel&&!st.solved?" sel":""}${st.lock.includes(i)?" lock":""}" data-i="${i}" role="button" tabindex="0" aria-label="Letter ${i+1}${ch?": "+ch:""}" style="animation-delay:${i*45}ms">${ch}</div>`).join("");
+  // dots: position n means "n hints used"
+  const total=Math.max(7,st.hints+1);
+  $("#dots").innerHTML=Array.from({length:total},(_,i)=>`<div class="dotcol"><div class="dot${i<st.hints?" used":""}${i===st.hints?" now":""}"></div><div class="parlbl">${i===lvl.par?"par":""}</div></div>`).join("");
+  const full=st.entry.every(Boolean);
+  $("#checkBtn").classList.toggle("ready",full);
+  $("#actions").hidden=st.solved; $("#kb").hidden=st.solved;
+  const done=$("#done"); done.hidden=!st.solved;
+  if(st.solved){
+    const diff=st.hints-lvl.par;
+    const verdict=diff<0?`${plural(-diff,"hint")} under par`:diff===0?"Right on par":`${plural(diff,"hint")} over par`;
+    done.innerHTML=`<h2>${st.hints===0?"Clean solve!":"Solved!"}</h2>
+      <div class="score">${st.hints?plural(st.hints,"hint"):"No hints"} · ${verdict}${st.wrong?` · ${plural(st.wrong,"wrong guess")}`:""}</div>
+      <div class="legend"><span style="background:var(--corn)">definition</span><span style="background:var(--pink)">indicator</span><span style="background:var(--butter)">fodder</span><span style="background:#eef0f4">${esc(p.t)}</span></div>
+      <p class="why">${esc(p.x)}</p>
+      <div class="donebtns"><button class="pill hints" id="shareBtn">share</button><button class="pill alt" id="nextBtn">${nextLevel()?"next":"done"}</button></div>`;
+    $("#shareBtn").onclick=share; $("#nextBtn").onclick=()=>{const n=nextLevel(); n?openPuzzle(n):showHome();};
+  }
+  $("#padclue").innerHTML=clueHTML(p);
+  save();
+}
+function nextLevel(){
+  const idx=LEVELS.indexOf(cur.lvl);
+  const order=[...LEVELS.slice(idx+1),...LEVELS.slice(0,idx)];
+  const n=order.find(l=>!progress(l.id).solved); return n?n.id:null;
+}
+function sizeCells(){
+  const n=cur.p.a.length, avail=Math.min($(".playscroll").clientWidth||360,440)-8;
+  const cs=Math.max(24,Math.min(66,Math.floor((avail-3*(n-1))/n)));
+  $("#grid").style.setProperty("--cs",cs+"px");
+}
+window.addEventListener("resize",()=>{ if(cur) sizeCells(); });
+
+$("#grid").addEventListener("click",e=>{const c=e.target.closest(".cell"); if(!c||cur.st.solved) return; sel=+c.dataset.i; renderPuzzle();});
+
+function typeLetter(ch){
+  const st=cur.st; if(st.solved) return;
+  if(st.lock.includes(sel)){ const n=nextOpen(sel,1); if(n<0) return; sel=n; }
+  st.entry[sel]=ch;
+  const n=nextOpen(sel,1); if(n>=0) sel=n;
+  renderPuzzle();
+}
+function nextOpen(from,dir){
+  const st=cur.st,L=st.entry.length;
+  for(let i=from+dir;i>=0&&i<L;i+=dir) if(!st.lock.includes(i)) return i;
+  return -1;
+}
+function backspace(){
+  const st=cur.st; if(st.solved) return;
+  if(st.entry[sel]&&!st.lock.includes(sel)){ st.entry[sel]=""; }
+  else { const p=nextOpen(sel,-1); if(p>=0){ sel=p; st.entry[sel]=""; } }
+  renderPuzzle();
+}
+function check(){
+  const st=cur.st,a=cur.p.a;
+  if(!st.entry.every(Boolean)){ toast("Fill every box first"); return; }
+  if(st.entry.join("")===a){ st.solved=true; renderPuzzle(); return; }
+  st.wrong++; save();
+  const g=$("#grid"); g.classList.remove("shake"); void g.offsetWidth; g.classList.add("shake");
+  toast("Not quite. Try again.");
+}
+$("#checkBtn").onclick=check;
+
+/* ---------- hints ---------- */
+const HINTS=[
+  {k:"i",label:"show indicators",hl:"var(--pink)",note:"Words that tell you what to do"},
+  {k:"f",label:"show fodder",hl:"var(--butter)",note:"The raw material the wordplay works on"},
+  {k:"d",label:"show definition",hl:"var(--corn)",note:"The plain meaning of the answer"},
+];
+function openHints(){
+  const {p,st}=cur; const roles=new Set(parse(p.c).map(s=>s.r));
+  const remaining=st.entry.length-st.lock.length;
+  let h=`<div class="sheethead"><span>Pick a hint</span><button class="x" data-close aria-label="Close hints"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg></button></div>`;
+  for(const o of HINTS){
+    const none=!roles.has(o.k), used=st.used[o.k];
+    h+=`<button class="opt" data-h="${o.k}" style="--hl:${o.hl}" ${none||used?"disabled":""}><span>${o.label}</span><small>${none?`None in this clue. It's a ${p.t.toLowerCase()}.`:used?"Already shown":o.note}</small></button>`;
+  }
+  h+=`<hr class="sep"><button class="opt" data-h="letter" style="--hl:var(--butter)" ${remaining?"":"disabled"}><span>show letter</span><small>${remaining?"Reveals one box":"Every letter is showing"}</small></button>`;
+  openSheet(h,"");
+}
+function useHint(k){
+  const st=cur.st,a=cur.p.a;
+  if(k==="letter"){
+    let i=st.entry.findIndex((c,j)=>!st.lock.includes(j)&&c!==a[j]);
+    if(i<0) i=st.entry.findIndex((c,j)=>!st.lock.includes(j));
+    if(i<0) return;
+    st.entry[i]=a[i]; st.lock.push(i); st.hints++;
+    if(sel===i){ const n=nextOpen(i,1); if(n>=0) sel=n; }
+    if(st.entry.join("")===a) st.solved=true;
+  } else { st.used[k]=true; st.hints++; }
+  closeSheet(); renderPuzzle();
+}
+$("#hintBtn").onclick=openHints;
+
+/* ---------- sheets ---------- */
+function openSheet(html,cls){
+  closeSheet();
+  const s=document.createElement("div"); s.className="scrim"; s.id="scrim";
+  s.innerHTML=`<div class="sheet ${cls}" role="dialog" aria-modal="true">${html}</div>`;
+  s.addEventListener("click",e=>{
+    if(e.target===s||e.target.closest("[data-close]")) return closeSheet();
+    const o=e.target.closest("[data-h]"); if(o&&!o.disabled) useHint(o.dataset.h);
+  });
+  document.body.appendChild(s);
+}
+function closeSheet(){ const s=$("#scrim"); if(s) s.remove(); }
+function openInfo(){
+  openSheet(`<div class="sheethead"><span style="font-weight:900">How twisty works</span><button class="x" data-close aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg></button></div>
+  <p>Every cryptic clue is two clues stuck together. One part is a plain <span class="mark" style="background:var(--corn)">definition</span>, always at the very start or the very end. The rest is wordplay that builds the same answer a second way.</p>
+  <p>The wordplay has <span class="mark" style="background:var(--butter)">fodder</span>, the letters or words you work with, and usually an <span class="mark" style="background:var(--pink)">indicator</span> that says what to do with them.</p>
+  <h3>Common tricks</h3>
+  <ul>
+    <li><b>Anagram</b>: “broken”, “wildly”, “out” mean shuffle the letters.</li>
+    <li><b>Hidden word</b>: “in”, “some of”, “seen in” mean the answer sits inside the clue's letters.</li>
+    <li><b>Reversal</b>: “returned”, “back”, “turning” mean read it backwards.</li>
+    <li><b>Container</b>: “keeps”, “holds”, “embraces” put one piece inside another.</li>
+    <li><b>Charade</b>: pieces join end to end, like CAR + PET.</li>
+    <li><b>Homophone</b>: “reportedly”, “we hear” mean it sounds like something.</li>
+    <li><b>Abbreviations</b>: H for hospital, L for learner, G for good, ST for street, I for one.</li>
+  </ul>
+  <h3>Levels and par</h3>
+  <p>There's a new clue at each of the five levels every day, from Beginner up to Impossible. Par is the number of hints a solid solver needs at that level. Each hint you use fills a dot. Wrong guesses don't cost a hint.</p>
+  <h3>Scribble pad</h3>
+  <p>Tap the squiggle button to open a pad where you can pull letters out of the clue and push them around. The wheel arranges them in a circle, which makes anagrams easier to spot.</p>`,"info");
+}
+$("#infoBtn").onclick=openInfo; $("#learnBtn").onclick=openInfo;
+$("#back").onclick=showHome;
+
+/* ---------- keyboard ---------- */
+const ROWS=["QWERTYUIOP","ASDFGHJKL","ZXCVBNM"];
+$("#kb").innerHTML=ROWS.map((r,i)=>`<div class="kr">${[...r].map(c=>`<button class="key" data-k="${c}">${c}</button>`).join("")}${i===2?`<button class="key wide" data-k="BACK" aria-label="Delete"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M9 5h11v14H9l-6-7z"/><path d="M12 9l5 6M17 9l-5 6" stroke-linecap="round"/></svg></button>`:""}</div>`).join("");
+$("#kb").addEventListener("pointerdown",e=>{const k=e.target.closest(".key"); if(!k) return; e.preventDefault(); press(k.dataset.k);});
+function press(k){
+  if(!cur) return;
+  if(!$("#pad").hidden){ if(k==="BACK"){ pad.tiles.pop(); renderTiles(); } else if(/^[A-Z]$/.test(k)) padAdd(k); return; }
+  if(k==="BACK") backspace(); else if(k==="ENTER") check(); else typeLetter(k);
+}
+document.addEventListener("keydown",e=>{
+  if(e.metaKey||e.ctrlKey||e.altKey) return;
+  if(e.key==="Escape"){ if($("#scrim")) closeSheet(); else if(!$("#pad").hidden) closePad(); return; }
+  if(!cur||$("#scrim")) return;
+  if(/^[a-z]$/i.test(e.key)){ e.preventDefault(); press(e.key.toUpperCase()); }
+  else if(e.key==="Backspace"){ e.preventDefault(); press("BACK"); }
+  else if(e.key==="Enter"&&$("#pad").hidden&&!cur.st.solved&&!e.target.closest("button")){ e.preventDefault(); press("ENTER"); }
+  else if(e.key==="ArrowLeft"&&!cur.st.solved){ const p=nextOpen(sel,-1); if(p>=0){sel=p;renderPuzzle();} }
+  else if(e.key==="ArrowRight"&&!cur.st.solved){ const p=nextOpen(sel,1); if(p>=0){sel=p;renderPuzzle();} }
+});
+
+/* ---------- scribble pad ---------- */
+let pad={tiles:[],wheel:false}, tileSeq=0;
+const TS=48, GAP=8;
+function openPad(){ $("#pad").hidden=false; $("#kb").hidden=false; renderTiles(); }
+function closePad(){ $("#pad").hidden=true; if(cur) $("#kb").hidden=cur.st.solved; }
+$("#scribBtn").onclick=openPad; $("#padClose").onclick=closePad;
+function areaSize(){ const a=$("#tiles"); return {w:a.clientWidth||320,h:Math.max(a.clientHeight,150)}; }
+function gridSlot(i){ const {w}=areaSize(); const cols=Math.max(1,Math.floor((w+GAP)/(TS+GAP))); return {x:(i%cols)*(TS+GAP),y:Math.floor(i/cols)*(TS+GAP)}; }
+function layout(){
+  const {w,h}=areaSize(), n=pad.tiles.length;
+  if(pad.wheel&&n){
+    const r=Math.max(0,Math.min(w,h-10)/2-TS/2-4), cx=w/2-TS/2, cy=Math.min(h,w)/2-TS/2;
+    pad.tiles.forEach((t,i)=>{ const a=-Math.PI/2+i*2*Math.PI/n; t.x=n===1?cx:cx+r*Math.cos(a); t.y=n===1?cy:cy+r*Math.sin(a); });
+  } else pad.tiles.forEach((t,i)=>Object.assign(t,gridSlot(i)));
+}
+function padAdd(str){
+  const letters=str.toUpperCase().replace(/[^A-Z]/g,""); if(!letters) return;
+  for(const ch of letters){ const t={id:++tileSeq,ch,...gridSlot(pad.tiles.length)}; pad.tiles.push(t); }
+  if(pad.wheel) layout();
+  renderTiles();
+}
+function renderTiles(){
+  const area=$("#tiles");
+  area.querySelectorAll(".tile").forEach(t=>t.remove());
+  $("#padhelp").hidden=pad.tiles.length>0;
+  for(const t of pad.tiles){
+    const el=document.createElement("div"); el.className="tile"; el.textContent=t.ch; el.dataset.id=t.id;
+    el.style.transform=`translate(${t.x}px,${t.y}px)`;
+    area.insertBefore(el,$("#trash"));
+  }
+}
+$("#padclue").addEventListener("click",e=>{const w=e.target.closest(".w"); if(w) padAdd(w.textContent);});
+$("#shuffleBtn").onclick=()=>{ for(let i=pad.tiles.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pad.tiles[i],pad.tiles[j]]=[pad.tiles[j],pad.tiles[i]];} layout(); renderTiles(); };
+$("#wheelBtn").onclick=()=>{ pad.wheel=!pad.wheel; $("#wheelBtn").setAttribute("aria-pressed",String(pad.wheel)); layout(); renderTiles(); };
+
+$("#tiles").addEventListener("pointerdown",e=>{
+  const el=e.target.closest(".tile"); if(!el) return;
+  e.preventDefault();
+  const t=pad.tiles.find(x=>x.id===+el.dataset.id); const area=$("#tiles"), trash=$("#trash");
+  const r=area.getBoundingClientRect(); const ox=e.clientX-r.left-t.x, oy=e.clientY-r.top-t.y;
+  el.setPointerCapture(e.pointerId); el.classList.add("drag");
+  let over=false, holdT=null, cleared=false;
+  const move=ev=>{
+    t.x=Math.max(0,Math.min(r.width-TS,ev.clientX-r.left-ox));
+    t.y=Math.max(0,Math.min(r.height-TS,ev.clientY-r.top-oy));
+    el.style.transform=`translate(${t.x}px,${t.y}px)`;
+    const tr=trash.getBoundingClientRect();
+    const now=ev.clientX>tr.left-10&&ev.clientX<tr.right+10&&ev.clientY>tr.top-10&&ev.clientY<tr.bottom+10;
+    if(now!==over){ over=now; trash.classList.toggle("hot",over);
+      clearTimeout(holdT); if(over) holdT=setTimeout(()=>{ cleared=true; pad.tiles=[]; trash.classList.remove("hot"); renderTiles(); toast("Pad cleared"); },1000); }
+  };
+  const up=()=>{
+    el.removeEventListener("pointermove",move); el.removeEventListener("pointerup",up); el.removeEventListener("pointercancel",up);
+    clearTimeout(holdT); trash.classList.remove("hot");
+    if(cleared) return;
+    if(over) pad.tiles=pad.tiles.filter(x=>x!==t);
+    renderTiles();
+  };
+  el.addEventListener("pointermove",move); el.addEventListener("pointerup",up); el.addEventListener("pointercancel",up);
+});
+
+/* ---------- share ---------- */
+function share(){
+  const {st,lvl}=cur;
+  const dots="●".repeat(st.hints)+"○".repeat(Math.max(0,lvl.par-st.hints));
+  const text=`twisty · ${DATELBL} · ${lvl.name}\n${st.hints?plural(st.hints,"hint"):"No hints"} (par ${lvl.par})${st.wrong?` · ${plural(st.wrong,"wrong guess")}`:""}\n${dots||"✓"}`;
+  const fallback=()=>{ const ta=document.createElement("textarea"); ta.value=text; document.body.appendChild(ta); ta.select(); let ok=false; try{ ok=document.execCommand("copy"); }catch(e){} ta.remove(); toast(ok?"Result copied":"Copy failed. Select and copy the score by hand."); };
+  try{ navigator.clipboard.writeText(text).then(()=>toast("Result copied"),fallback); }catch(e){ fallback(); }
+}
+
+showHome();
+</script>
+</body>
+</html>
