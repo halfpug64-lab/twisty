@@ -167,6 +167,29 @@ button:focus-visible,.cell:focus-visible{outline:3px solid var(--ink);outline-of
 .toast{position:fixed;left:50%;top:calc(18px + env(safe-area-inset-top,0px));transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:999px;font-weight:800;font-size:15px;z-index:60;animation:up .2s;max-width:calc(100% - 32px);text-align:center}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 @media (max-width:380px){.pill{font-size:23px}.key{height:50px;font-size:19px}}
+/* Wide screens (iPhone Duo opened, iPads): split into two panes with a clear gap down the middle so nothing sits on the fold */
+@media (min-width:700px){
+  #app{--crease:72px;max-width:1180px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);column-gap:var(--crease)}
+  .bar{grid-column:1/-1}
+  #home{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:var(--crease);
+    grid-template-areas:"hero levels" "foot levels" "learn levels";grid-template-rows:auto auto 1fr;align-content:center;padding-block:12px 32px}
+  .hero{grid-area:hero;align-self:end}
+  .hero h1{font-size:clamp(64px,8vw,96px)}
+  .hero p{font-size:20px}
+  .levels{grid-area:levels;align-self:center}
+  .homefoot{grid-area:foot;font-size:17px;margin-top:22px}
+  .learn{grid-area:learn;margin-top:14px;justify-self:start;align-self:start}
+  #play{grid-column:1}
+  .playscroll{justify-content:center}
+  #kb{grid-column:2;grid-row:2;align-self:center;padding-block:0 max(16px,env(safe-area-inset-bottom,0px));gap:12px}
+  .key{max-width:none;height:60px;font-size:24px}
+  .key.wide{max-width:none}
+  #app.is-solved #play{grid-column:1/-1}
+  #app.is-solved .playscroll{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:var(--crease);align-content:center;justify-items:center;row-gap:26px}
+  #app.is-solved .playscroll > *{grid-column:1}
+  #app.is-solved #done{grid-column:2;grid-row:1/span 4;align-self:center}
+  .donecard .why{font-size:19px}
+}
 </style>
 </head>
 <body>
@@ -355,7 +378,7 @@ const plural=(n,w)=>`${n} ${w}${n===1?"":"s"}`;
 
 /* ---------- home ---------- */
 function showHome(){
-  cur=null; closePad(); closeSheet();
+  cur=null; closePad(); closeSheet(); $("#app").classList.remove("is-solved");
   $("#home").hidden=false; $("#play").hidden=true; $("#kb").hidden=true; $("#back").hidden=true;
   $("#dateLbl").textContent=DATELBL; $("#subLbl").textContent="Today's clues";
   let solved=0;
@@ -398,7 +421,7 @@ function renderPuzzle(){
   $("#dots").innerHTML=Array.from({length:total},(_,i)=>`<div class="dotcol"><div class="dot${i<st.hints?" used":""}${i===st.hints?" now":""}"></div><div class="parlbl">${i===lvl.par?"par":""}</div></div>`).join("");
   const full=st.entry.every(Boolean);
   $("#checkBtn").classList.toggle("ready",full);
-  $("#actions").hidden=st.solved; $("#kb").hidden=st.solved;
+  $("#actions").hidden=st.solved; $("#kb").hidden=st.solved; $("#app").classList.toggle("is-solved",st.solved);
   const done=$("#done"); done.hidden=!st.solved;
   if(st.solved){
     const diff=st.hints-lvl.par;
