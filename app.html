@@ -220,6 +220,11 @@ html.duo-tall .key.wide{max-width:none}
 html.duo-tall #kb{gap:11px}
 html.duo-tall .playscroll{justify-content:center}
 html.duo-tall .lvl{padding:18px 20px}
+/* Home screen app: iOS 26 softly blurs content near the top edge under the status bar, so keep the header clear of that band */
+@media (display-mode: standalone){
+  .bar{padding-top:calc(env(safe-area-inset-top,0px) + clamp(24px,calc(var(--h,800px)*.04),34px))}
+}
+html.standalone .bar{padding-top:calc(env(safe-area-inset-top,0px) + clamp(24px,calc(var(--h,800px)*.04),34px))}
 /* iPhone Duo opened: split into two panes with a clear gap down the middle so nothing sits on the fold. Only turned on by the check in the script below. */
 html.duo #app{--crease:72px;max-width:1180px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);column-gap:var(--crease)}
 html.duo .bar{grid-column:1/-1}
@@ -737,6 +742,7 @@ function checkDuo(){
   document.documentElement.classList.toggle("duo-tall",isDuo&&!wide);
   if(cur) sizeCells();
 }
+if(window.navigator.standalone===true) document.documentElement.classList.add("standalone");
 function setHeight(){ document.documentElement.style.setProperty("--h",($("#app").clientHeight||innerHeight)+"px"); }
 setHeight();
 window.addEventListener("resize",setHeight);
