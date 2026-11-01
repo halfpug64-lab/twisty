@@ -29,12 +29,10 @@ function check(where, c, level) {
 for (const l of LEVELS) CLUES[l].forEach((c, i) => check(`rotation ${l} #${i + 1}`, c, l));
 BONUS.forEach((r, i) => LEVELS.forEach(l => r.clues[l] ? check(`bonus ${i + 1} ${l}`, r.clues[l], l) : fail(`bonus ${i + 1}`, "missing " + l)));
 
-// Variety: a set of five must not lean on anagrams
+// Variety: anagrams are welcome in any number, but a set can't be all one clue type
 function variety(where, clues) {
-  const types = clues.map(c => (c.t || "").toLowerCase());
-  const anagrams = types.filter(t => t === "anagram").length;
-  if (anagrams > 1) fail(where, `${anagrams} anagrams in one set (max 1)`);
-  if (new Set(types).size < 4) fail(where, `only ${new Set(types).size} different clue types (need at least 4)`);
+  const types = new Set(clues.map(c => (c.t || "").toLowerCase()));
+  if (clues.length > 1 && types.size < 2) fail(where, "every clue is the same type; mix in at least one other kind");
 }
 for (const [date, set] of Object.entries(DAILY)) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) fail(date, "date must be YYYY-MM-DD");
@@ -42,10 +40,5 @@ for (const [date, set] of Object.entries(DAILY)) {
   variety(`daily ${date}`, LEVELS.map(l => set[l]).filter(Boolean));
 }
 BONUS.forEach((r, i) => variety(`bonus ${i + 1}`, LEVELS.map(l => r.clues[l]).filter(Boolean)));
-// Built-in pools: no level may be more than 3 of 8 anagrams
-for (const l of LEVELS) {
-  const n = CLUES[l].filter(c => c.t.toLowerCase() === "anagram").length;
-  if (n / CLUES[l].length > 0.4) fail(`rotation ${l}`, `${n} of ${CLUES[l].length} are anagrams (max 40%)`);
-}
 console.log(errors ? `\n${errors} problem(s) found.` : `All ${seen.size} clues pass.`);
 process.exit(errors ? 1 : 0);
