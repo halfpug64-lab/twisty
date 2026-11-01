@@ -1,5 +1,5 @@
 // Keeps Twisty playable offline. Pages load fresh when online, cached copy when not.
-const CACHE = "twisty-v6";
+const CACHE = "twisty-v7";
 const SHELL = ["./", "index.html", "manifest.webmanifest", "apple-touch-icon.png", "icon-192.png", "icon-512.png"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL))); self.skipWaiting(); });
 self.addEventListener("activate", e => {

@@ -170,6 +170,13 @@ button:focus-visible,.cell:focus-visible{outline:3px solid var(--ink);outline-of
 .toast{position:fixed;left:50%;top:calc(18px + env(safe-area-inset-top,0px));transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:999px;font-weight:800;font-size:15px;z-index:60;animation:up .2s;max-width:calc(100% - 32px);text-align:center}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 @media (max-width:380px){.pill{font-size:23px}.key{height:50px;font-size:19px}}
+html.duo-tall #app{max-width:620px}
+html.duo-tall .cluecard{font-size:34px}
+html.duo-tall .key{max-width:none;height:62px;font-size:25px}
+html.duo-tall .key.wide{max-width:none}
+html.duo-tall #kb{gap:11px}
+html.duo-tall .playscroll{justify-content:center}
+html.duo-tall .lvl{padding:18px 20px}
 /* iPhone Duo opened: split into two panes with a clear gap down the middle so nothing sits on the fold. Only turned on by the check in the script below. */
 html.duo #app{--crease:72px;max-width:1180px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);column-gap:var(--crease)}
 html.duo .bar{grid-column:1/-1}
@@ -660,8 +667,11 @@ function share(){
 function checkDuo(){
   const iPhone=/iPhone/.test(navigator.userAgent);
   const shortSide=Math.min(screen.width,screen.height);
-  const on=(iPhone&&shortSide>=500)||location.hash==="#duo";
-  document.documentElement.classList.toggle("duo",on);
+  const isDuo=(iPhone&&shortSide>=500)||location.hash==="#duo";
+  const wide=innerWidth>innerHeight;
+  // Opened and held sideways: two panes. Opened and held upright: one roomy column.
+  document.documentElement.classList.toggle("duo",isDuo&&wide);
+  document.documentElement.classList.toggle("duo-tall",isDuo&&!wide);
   if(cur) sizeCells();
 }
 checkDuo();
