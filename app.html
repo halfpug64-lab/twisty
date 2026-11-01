@@ -355,6 +355,8 @@ const save=()=>{ try{ localStorage.setItem(STORE,JSON.stringify(DB)); }catch(e){
 
 function puzzleFor(levelId){
   if(SET) return BONUS_ROUNDS[SET-1].clues[levelId];
+  const fresh=(window.TWISTY_DAILY||{})[TODAY];
+  if(fresh&&fresh[levelId]) return fresh[levelId];
   const pool=CLUES[levelId], off=LEVELS.findIndex(l=>l.id===levelId)*3;
   return pool[(DAYNUM+off)%pool.length];
 }

@@ -267,6 +267,7 @@ html.duo .donecard .why{font-size:19px}
   <div id="kb" hidden></div>
 </div>
 
+<script src="daily.js"></script>
 <script>
 /* ---------- clue bank ----------
    Markup: [d:...] definition, [i:...] indicator, [f:...] fodder / wordplay pieces */
@@ -370,6 +371,8 @@ const save=()=>{ try{ localStorage.setItem(STORE,JSON.stringify(DB)); }catch(e){
 
 function puzzleFor(levelId){
   if(SET) return BONUS_ROUNDS[SET-1].clues[levelId];
+  const fresh=(window.TWISTY_DAILY||{})[TODAY];
+  if(fresh&&fresh[levelId]) return fresh[levelId];
   const pool=CLUES[levelId], off=LEVELS.findIndex(l=>l.id===levelId)*3;
   return pool[(DAYNUM+off)%pool.length];
 }
