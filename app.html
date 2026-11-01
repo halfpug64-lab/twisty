@@ -233,6 +233,54 @@ html.standalone body{position:fixed;inset:0}
 /* Home screen app: nudge everything 6px to the right so the left edge isn't clipped */
 @media (display-mode: standalone){ #app{padding-left:calc(max(16px,env(safe-area-inset-left,0px)) + 6px);padding-right:calc(max(16px,env(safe-area-inset-right,0px)) - 6px)} }
 html.standalone #app{padding-left:calc(max(16px,env(safe-area-inset-left,0px)) + 6px);padding-right:calc(max(16px,env(safe-area-inset-right,0px)) - 6px)}
+/* ---------- Pride theme ---------- */
+:root{
+  --pr-red:#e40303; --pr-orange:#ff8c00; --pr-yellow:#ffd800; --pr-green:#008026; --pr-blue:#24408e; --pr-purple:#732982;
+  --pl-red:#ffc9c9; --pl-orange:#ffdcb3; --pl-yellow:#fff3a8; --pl-green:#c4ecc9; --pl-blue:#c7d3f5; --pl-purple:#e6c9f2;
+  --rainbow:linear-gradient(90deg,var(--pr-red),var(--pr-orange),var(--pr-yellow),var(--pr-green),var(--pr-blue),var(--pr-purple));
+  --rainbow-soft:linear-gradient(100deg,var(--pl-red),var(--pl-orange),var(--pl-yellow),var(--pl-green),var(--pl-blue),var(--pl-purple));
+}
+body{background:linear-gradient(165deg,#ffd9e4 0%,#ffe8cc 20%,#fff6c7 40%,#daf3dc 60%,#d4e1fb 80%,#ead6f7 100%) fixed;background-color:#f3e6f5}
+.bar{position:relative}
+.bar::after{content:"";position:absolute;left:0;right:0;bottom:0;height:5px;border-radius:3px;background:var(--rainbow)}
+.badge{box-shadow:3px 3px 0 var(--pr-purple)}
+.hero h1{width:fit-content;background:var(--rainbow);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-stroke:2px var(--ink);padding-right:.08em}
+.levels li:nth-child(1) .lvl{box-shadow:5px 5px 0 var(--pr-red)}
+.levels li:nth-child(2) .lvl{box-shadow:5px 5px 0 var(--pr-orange)}
+.levels li:nth-child(3) .lvl{box-shadow:5px 5px 0 var(--pr-yellow)}
+.levels li:nth-child(4) .lvl{box-shadow:5px 5px 0 var(--pr-green)}
+.levels li:nth-child(5) .lvl{box-shadow:5px 5px 0 var(--pr-blue)}
+.lvl .status.done{background:var(--rainbow-soft)}
+.bonusbtn{background:var(--rainbow-soft);box-shadow:4px 4px 0 var(--pr-purple)}
+.cluecard{border:3px solid var(--ink);box-shadow:5px 5px 0 var(--pr-purple)}
+.cell.sel{background:var(--pl-purple)}
+.solved .cell:nth-child(6n+1){background:var(--pl-red)}
+.solved .cell:nth-child(6n+2){background:var(--pl-orange)}
+.solved .cell:nth-child(6n+3){background:var(--pl-yellow)}
+.solved .cell:nth-child(6n+4){background:var(--pl-green)}
+.solved .cell:nth-child(6n+5){background:var(--pl-blue)}
+.solved .cell:nth-child(6n){background:var(--pl-purple)}
+.dot{background:rgba(255,255,255,.7)}
+.dotcol:nth-child(6n+1) .dot.used{background:var(--pr-red)}
+.dotcol:nth-child(6n+2) .dot.used{background:var(--pr-orange)}
+.dotcol:nth-child(6n+3) .dot.used{background:var(--pr-yellow)}
+.dotcol:nth-child(6n+4) .dot.used{background:var(--pr-green)}
+.dotcol:nth-child(6n+5) .dot.used{background:var(--pr-blue)}
+.dotcol:nth-child(6n) .dot.used{background:var(--pr-purple)}
+.dot.used{box-shadow:0 0 0 2px var(--ink)}
+.pill.hints{background:var(--rainbow-soft)}
+.pill.check.ready{box-shadow:5px 5px 0 var(--pr-purple)}
+.scrib{background:var(--pl-purple)}
+.donecard{box-shadow:6px 6px 0 var(--pr-purple)}
+.donecard h2{width:fit-content;background:var(--rainbow);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-stroke:1.5px var(--ink)}
+.kr:nth-child(1) .key{box-shadow:0 3px 0 var(--pr-red)}
+.kr:nth-child(2) .key{box-shadow:0 3px 0 var(--pr-green)}
+.kr:nth-child(3) .key{box-shadow:0 3px 0 var(--pr-blue)}
+.sheet{box-shadow:7px 7px 0 var(--pr-purple)}
+.sheet::before{content:"";display:block;height:6px;margin:-4px -6px 12px;border-radius:3px;background:var(--rainbow)}
+.tile{background:var(--tc,var(--pl-yellow))}
+.toast{background:var(--ink);box-shadow:0 0 0 3px #fff,0 0 0 6px var(--pr-purple)}
+.trash.hot{background:var(--pl-red)}
 /* iPhone Duo opened: split into two panes with a clear gap down the middle so nothing sits on the fold. Only turned on by the check in the script below. */
 html.duo #app{--crease:72px;max-width:1180px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);column-gap:var(--crease)}
 html.duo .bar{grid-column:1/-1}
@@ -264,13 +312,13 @@ html.duo .donecard .why{font-size:19px}
     </button>
     <div class="meta"><div class="date" id="dateLbl"></div><div class="sub" id="subLbl"></div></div>
     <button class="infobtn" id="infoBtn" aria-label="How to play">i</button>
-    <div class="badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><path d="M3 4h18M5.5 7.2h14M7.5 10.4h9.5M8.6 13.6h6.4M9 16.8h4M9.6 20h1.8"/></svg></div>
+    <div class="badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.1" stroke-linecap="round"><path d="M3 4h18" stroke="#e40303"/><path d="M5.5 7.2h14" stroke="#ff8c00"/><path d="M7.5 10.4h9.5" stroke="#ffd800"/><path d="M8.6 13.6h6.4" stroke="#2ecc40"/><path d="M9 16.8h4" stroke="#4f7cff"/><path d="M9.6 20h1.8" stroke="#c070e0"/></svg></div>
   </header>
 
   <main id="home">
     <section class="hero">
       <h1>twisty</h1>
-      <p>Five cryptic clues a day, one at every level. Fresh set at midnight.</p>
+      <p>Five cryptic clues a day, served with pride. Fresh set at midnight.</p>
     </section>
     <ol class="levels" id="levels"></ol>
     <div class="homefoot" id="homefoot"></div>
@@ -321,11 +369,11 @@ html.duo .donecard .why{font-size:19px}
 /* ---------- clue bank ----------
    Markup: [d:...] definition, [i:...] indicator, [f:...] fodder / wordplay pieces */
 const LEVELS = [
-  {id:"beginner",   name:"Beginner",   chip:"var(--mint)",  par:0},
-  {id:"easy",       name:"Easy",       chip:"var(--corn)",  par:0},
-  {id:"medium",     name:"Medium",     chip:"var(--butter)",par:1},
-  {id:"hard",       name:"Hard",       chip:"var(--pink)",  par:1},
-  {id:"impossible", name:"Impossible", chip:"var(--rose)",  par:2},
+  {id:"beginner",   name:"Beginner",   chip:"var(--pl-red)",  par:0},
+  {id:"easy",       name:"Easy",       chip:"var(--pl-orange)",par:0},
+  {id:"medium",     name:"Medium",     chip:"var(--pl-yellow)",par:1},
+  {id:"hard",       name:"Hard",       chip:"var(--pl-green)", par:1},
+  {id:"impossible", name:"Impossible", chip:"var(--pl-blue)",  par:2},
 ];
 const CLUES = {
   beginner: [
@@ -469,7 +517,7 @@ function showHome(){
   cur=null; closePad(); closeSheet(); $("#app").classList.remove("is-solved");
   $("#home").hidden=false; $("#play").hidden=true; $("#kb").hidden=true; $("#back").hidden=true;
   $("#dateLbl").textContent=DATELBL; $("#subLbl").textContent=SET?`Bonus round ${SET}`:"Today's clues";
-  const opts=[...(SET?[{n:0,label:"Today's clues"}]:[]),...TODAY_ROUNDS.filter(r=>r.n!==SET).map(r=>({n:r.n,label:`Bonus round ${r.n}`}))];
+  const opts=[...(SET?[{n:0,label:"Today's clues"}]:[]),...TODAY_ROUNDS.filter(r=>r.n!==SET).map(r=>({n:r.n,label:`Bonus ${r.n}`}))];
   $("#bonusBtns").innerHTML=opts.map(o=>`<button class="bonusbtn" data-set="${o.n}">${o.label}</button>`).join("");
   let solved=0;
   $("#levels").innerHTML=LEVELS.map((l,i)=>{
@@ -517,7 +565,7 @@ function renderPuzzle(){
   if(st.solved){
     const diff=st.hints-lvl.par;
     const verdict=diff<0?`${plural(-diff,"hint")} under par`:diff===0?"Right on par":`${plural(diff,"hint")} over par`;
-    done.innerHTML=`<h2>${st.hints===0?"Clean solve!":"Solved!"}</h2>
+    done.innerHTML=`<h2>${st.hints===0?"Slay!":"Nailed it!"}</h2>
       <div class="score">${st.hints?plural(st.hints,"hint"):"No hints"} · ${verdict}${st.wrong?` · ${plural(st.wrong,"wrong guess")}`:""}</div>
       <div class="legend"><span style="background:var(--corn)">definition</span><span style="background:var(--pink)">indicator</span><span style="background:var(--butter)">fodder</span><span style="background:#eef0f4">${esc(p.t)}</span></div>
       <p class="why">${esc(p.x)}</p>
@@ -692,7 +740,7 @@ function renderTiles(){
   area.querySelectorAll(".tile").forEach(t=>t.remove());
   $("#padhelp").hidden=pad.tiles.length>0;
   for(const t of pad.tiles){
-    const el=document.createElement("div"); el.className="tile"; el.textContent=t.ch; el.dataset.id=t.id;
+    const el=document.createElement("div"); el.className="tile"; el.textContent=t.ch; el.style.setProperty("--tc",["var(--pl-red)","var(--pl-orange)","var(--pl-yellow)","var(--pl-green)","var(--pl-blue)","var(--pl-purple)"][pad.tiles.indexOf(t)%6]); el.dataset.id=t.id;
     el.style.transform=`translate(${t.x}px,${t.y}px)`;
     area.insertBefore(el,$("#trash"));
   }
