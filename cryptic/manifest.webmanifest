@@ -1,0 +1,16 @@
+{
+  "name": "Twisty Daily Cryptic",
+  "short_name": "Twisty",
+  "description": "Five cryptic clues a day, from Beginner to Impossible.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#b4d1f8",
+  "theme_color": "#b4d1f8",
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png"},
+    {"src": "icon-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}
