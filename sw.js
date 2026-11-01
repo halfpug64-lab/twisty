@@ -1,5 +1,5 @@
 // Keeps Twisty playable offline. Pages load fresh when online, cached copy when not.
-const CACHE = "twisty-v15";
+const CACHE = "twisty-v16";
 const SHELL = ["./", "index.html", "daily.js", "manifest.webmanifest", "apple-touch-icon.png", "icon-192.png", "icon-512.png"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL))); self.skipWaiting(); });
 self.addEventListener("activate", e => {
@@ -14,7 +14,8 @@ self.addEventListener("fetch", e => {
   // Only handle the game itself, not other pages hosted in the same repo (like /wheel/).
   if (url.origin === scope.origin && !(url.pathname === scope.pathname || url.pathname.startsWith(scope.pathname) && !url.pathname.slice(scope.pathname.length).includes("/"))) return;
   if (req.mode === "navigate") {
-    e.respondWith(fetch(req).then(r => { const copy = r.clone(); caches.open(CACHE).then(c => c.put("index.html", copy)); return r; })
+    // Always ask GitHub for the newest page instead of a copy the phone saved earlier
+    e.respondWith(fetch(req.url, {cache: "no-cache", credentials: "same-origin"}).then(r => { const copy = r.clone(); caches.open(CACHE).then(c => c.put("index.html", copy)); return r; })
       .catch(() => caches.match("index.html")));
     return;
   }
