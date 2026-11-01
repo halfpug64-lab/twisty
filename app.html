@@ -230,6 +230,9 @@ html{touch-action:manipulation;-webkit-text-size-adjust:100%;text-size-adjust:10
 html,body{overscroll-behavior:none}
 @media (display-mode: standalone){ body{position:fixed;inset:0} }
 html.standalone body{position:fixed;inset:0}
+/* Home screen app: nudge everything 6px to the right so the left edge isn't clipped */
+@media (display-mode: standalone){ #app{padding-left:calc(max(16px,env(safe-area-inset-left,0px)) + 6px);padding-right:calc(max(16px,env(safe-area-inset-right,0px)) - 6px)} }
+html.standalone #app{padding-left:calc(max(16px,env(safe-area-inset-left,0px)) + 6px);padding-right:calc(max(16px,env(safe-area-inset-right,0px)) - 6px)}
 /* iPhone Duo opened: split into two panes with a clear gap down the middle so nothing sits on the fold. Only turned on by the check in the script below. */
 html.duo #app{--crease:72px;max-width:1180px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);column-gap:var(--crease)}
 html.duo .bar{grid-column:1/-1}
