@@ -157,7 +157,62 @@ button:focus-visible,.cell:focus-visible{outline:3px solid var(--ink);outline-of
 
 .toast{position:fixed;left:50%;top:calc(18px + env(safe-area-inset-top,0px));transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:999px;font-weight:800;font-size:15px;z-index:60;animation:up .2s;max-width:calc(100% - 32px);text-align:center}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
-@media (max-width:380px){.pill{font-size:23px}.key{height:50px;font-size:19px}}
+/* Fit every screen in one view, no scrolling: sizes scale with the app's height (--h is set by the script) */
+html,body{overflow:hidden}
+#app{--dot:clamp(18px,calc(var(--h,800px)*.034),30px);--btn:clamp(44px,calc(var(--h,800px)*.07),62px)}
+.bar{padding-block:clamp(6px,calc(var(--h,800px)*.016),14px) clamp(4px,calc(var(--h,800px)*.012),12px)}
+#home{overflow:hidden;gap:clamp(8px,calc(var(--h,800px)*.02),22px);padding-block:4px max(12px,env(safe-area-inset-bottom,0px))}
+.hero h1{font-size:clamp(34px,calc(var(--h,800px)*.075),64px)}
+.hero p{font-size:clamp(13px,calc(var(--h,800px)*.022),17px);margin-top:clamp(2px,calc(var(--h,800px)*.01),10px)}
+.levels{flex:1;min-height:0;display:grid;grid-template-rows:repeat(5,minmax(0,84px));align-content:center;gap:clamp(6px,calc(var(--h,800px)*.014),12px)}
+.levels li{min-height:0;display:flex}
+.lvl{height:auto;padding:0 16px;gap:12px;min-height:0}
+.lvl .chip{width:clamp(30px,calc(var(--h,800px)*.055),46px);height:clamp(30px,calc(var(--h,800px)*.055),46px);font-size:clamp(15px,calc(var(--h,800px)*.026),20px)}
+.lvl .name{font-size:clamp(18px,calc(var(--h,800px)*.032),24px)}
+.lvl .info{font-size:clamp(12px,calc(var(--h,800px)*.019),14px)}
+.homefoot{align-items:center;font-size:clamp(13px,calc(var(--h,800px)*.021),15px)}
+.howto{margin-left:auto;font-weight:800;text-decoration:underline;text-underline-offset:3px}
+.bonusbtns{flex-direction:row;gap:10px}
+.bonusbtns:empty{display:none}
+.bonusbtn{flex:1;min-width:0;height:clamp(40px,calc(var(--h,800px)*.064),56px);font-size:clamp(15px,calc(var(--h,800px)*.027),21px);padding:0 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.playscroll{overflow:hidden;gap:clamp(8px,calc(var(--h,800px)*.022),26px);padding-block:4px 8px;justify-content:center}
+.cluecard{font-size:clamp(18px,calc(var(--h,800px)*.036),31px);padding:clamp(10px,calc(var(--h,800px)*.02),18px) 20px;line-height:1.45}
+.dots{gap:clamp(5px,calc(var(--h,800px)*.011),9px)}
+.dotcol{width:calc(var(--dot) + 4px);gap:2px}
+.dot{width:var(--dot);height:var(--dot)}
+.dot.now{width:calc(var(--dot) + 4px);height:calc(var(--dot) + 4px);border-width:clamp(3px,calc(var(--h,800px)*.005),4px)}
+.parlbl{font-size:clamp(14px,calc(var(--h,800px)*.024),20px);height:auto;line-height:1.2}
+.scrib{width:var(--btn);height:var(--btn)}
+.scrib svg{width:calc(var(--btn)*.48);height:calc(var(--btn)*.48)}
+.pill{height:var(--btn);font-size:clamp(20px,calc(var(--h,800px)*.032),27px)}
+.donecard{padding:clamp(12px,calc(var(--h,800px)*.02),18px) 18px;gap:clamp(6px,calc(var(--h,800px)*.013),12px)}
+.donecard h2{font-size:clamp(22px,calc(var(--h,800px)*.04),32px)}
+.donecard .score{font-size:clamp(13px,calc(var(--h,800px)*.02),16px)}
+.donecard .why{font-size:clamp(14px,calc(var(--h,800px)*.024),17px);line-height:1.45}
+.donebtns{flex-wrap:nowrap}
+.donebtns .pill{height:clamp(40px,calc(var(--h,800px)*.06),52px);font-size:clamp(18px,calc(var(--h,800px)*.028),22px)}
+#kb{gap:clamp(6px,calc(var(--h,800px)*.011),9px);padding-block:clamp(4px,calc(var(--h,800px)*.01),8px) max(8px,env(safe-area-inset-bottom,0px))}
+.key{height:clamp(38px,calc(var(--h,800px)*.064),54px);font-size:clamp(17px,calc(var(--h,800px)*.028),22px)}
+.sheet{max-height:100%;overflow:hidden;padding:clamp(12px,calc(var(--h,800px)*.022),20px) 22px clamp(14px,calc(var(--h,800px)*.026),26px)}
+.sheethead{margin-bottom:clamp(2px,calc(var(--h,800px)*.01),10px)}
+.opt{padding:clamp(6px,calc(var(--h,800px)*.018),16px) 0;font-size:clamp(22px,calc(var(--h,800px)*.04),30px)}
+.opt small{font-size:clamp(12px,calc(var(--h,800px)*.019),14px)}
+.sheet.info h3{font-size:clamp(19px,calc(var(--h,800px)*.034),24px);margin:4px 0 6px}
+.sheet.info p,.sheet.info li{font-size:clamp(13.5px,calc(var(--h,800px)*.024),16px);line-height:1.45;margin:0 0 clamp(6px,calc(var(--h,800px)*.012),10px)}
+.sheet.info ul{margin:0}
+.infonav{display:flex;align-items:center;gap:12px;margin-top:clamp(8px,calc(var(--h,800px)*.02),16px)}
+.infonav .pill{height:clamp(40px,calc(var(--h,800px)*.06),50px);font-size:clamp(18px,calc(var(--h,800px)*.028),22px);max-width:none}
+.infonav .pill[disabled]{visibility:hidden}
+.pgdots{display:flex;gap:6px}
+.pgdots i{width:9px;height:9px;border-radius:50%;background:var(--mist)}
+.pgdots i.on{background:var(--ink)}
+#pad{padding:clamp(10px,calc(var(--h,800px)*.02),16px) 16px;gap:clamp(6px,calc(var(--h,800px)*.014),12px)}
+.padtitle i{width:clamp(36px,calc(var(--h,800px)*.056),46px);height:clamp(36px,calc(var(--h,800px)*.056),46px)}
+.tool{height:clamp(38px,calc(var(--h,800px)*.056),46px)}
+#padclue{font-size:clamp(17px,calc(var(--h,800px)*.032),26px);line-height:1.4}
+.tiles{min-height:0}
+.padhelp{font-size:clamp(13px,calc(var(--h,800px)*.021),15px);padding:10px 14px;margin-right:64px}
+.trash{width:clamp(46px,calc(var(--h,800px)*.07),58px);height:clamp(46px,calc(var(--h,800px)*.07),58px)}
 html.duo-tall #app{max-width:620px}
 html.duo-tall .cluecard{font-size:34px}
 html.duo-tall .key{max-width:none;height:62px;font-size:25px}
@@ -169,15 +224,14 @@ html.duo-tall .lvl{padding:18px 20px}
 html.duo #app{--crease:72px;max-width:1180px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);column-gap:var(--crease)}
 html.duo .bar{grid-column:1/-1}
 html.duo #home{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:var(--crease);
-    grid-template-areas:"hero levels" "foot levels" "bonus levels" "learn levels";grid-template-rows:auto auto auto 1fr;align-content:center;padding-block:12px 32px}
+    grid-template-areas:"hero levels" "foot levels" "bonus levels";grid-template-rows:auto auto 1fr;align-content:center;padding-block:12px 32px}
 html.duo .hero{grid-area:hero;align-self:end}
 html.duo .hero h1{font-size:clamp(64px,8vw,96px)}
 html.duo .hero p{font-size:20px}
-html.duo .levels{grid-area:levels;align-self:center}
+html.duo .levels{grid-area:levels;align-self:center;grid-template-rows:repeat(5,84px)}
 html.duo .homefoot{grid-area:foot;font-size:17px;margin-top:22px}
-html.duo .bonusbtns{grid-area:bonus;margin-top:18px;justify-self:start}
+html.duo .bonusbtns{grid-area:bonus;margin-top:18px;align-self:start}
 html.duo .bonusbtn{padding:0 28px}
-html.duo .learn{grid-area:learn;margin-top:14px;justify-self:start;align-self:start}
 html.duo #play{grid-column:1}
 html.duo .playscroll{justify-content:center}
 html.duo #kb{grid-column:2;grid-row:2;align-self:center;padding-block:0 max(16px,env(safe-area-inset-bottom,0px));gap:12px}
@@ -208,7 +262,6 @@ html.duo .donecard .why{font-size:19px}
     <ol class="levels" id="levels"></ol>
     <div class="homefoot" id="homefoot"></div>
     <div class="bonusbtns" id="bonusBtns"></div>
-    <button class="learn" id="learnBtn">New to cryptics? Read how they work</button>
   </main>
 
   <main id="play" hidden>
@@ -240,9 +293,8 @@ html.duo .donecard .why{font-size:19px}
       <div id="padclue" class="tapwords"></div>
       <div class="tiles" id="tiles">
         <div class="padhelp" id="padhelp">
-          <p>Tap words in the clue or type to add letters. Drag them around to test the wordplay.</p>
-          <p>Try the <b>wheel</b> to see what jumps out.</p>
-          <p>Drag a letter onto the <b>bin</b> to delete it. Hold one over the bin to clear everything.</p>
+          <p>Tap clue words or type to add letters, then drag them around.</p>
+          <p>The <b>circle</b> button makes a letter wheel. Drop a letter on the <b>bin</b> to delete it, or hold it there to clear all.</p>
         </div>
         <div class="trash" id="trash" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg></div>
       </div>
@@ -404,7 +456,7 @@ function showHome(){
   cur=null; closePad(); closeSheet(); $("#app").classList.remove("is-solved");
   $("#home").hidden=false; $("#play").hidden=true; $("#kb").hidden=true; $("#back").hidden=true;
   $("#dateLbl").textContent=DATELBL; $("#subLbl").textContent=SET?`Bonus round ${SET}`:"Today's clues";
-  const opts=[...(SET?[{n:0,label:"Back to today's clues"}]:[]),...TODAY_ROUNDS.filter(r=>r.n!==SET).map(r=>({n:r.n,label:`Bonus round ${r.n} · today only`}))];
+  const opts=[...(SET?[{n:0,label:"Today's clues"}]:[]),...TODAY_ROUNDS.filter(r=>r.n!==SET).map(r=>({n:r.n,label:`Bonus round ${r.n}`}))];
   $("#bonusBtns").innerHTML=opts.map(o=>`<button class="bonusbtn" data-set="${o.n}">${o.label}</button>`).join("");
   let solved=0;
   $("#levels").innerHTML=LEVELS.map((l,i)=>{
@@ -418,7 +470,7 @@ function showHome(){
   }).join("");
   save();
   const s=streak();
-  $("#homefoot").innerHTML=`<span><b>${solved}/5</b> ${SET?"bonus solved":"solved today"}</span><span><b>${s}</b> day streak</span>`;
+  $("#homefoot").innerHTML=`<span><b>${solved}/5</b> ${SET?"bonus solved":"solved today"}</span><span><b>${s}</b> day streak</span><button class="howto" type="button">How to play</button>`;
 }
 $("#bonusBtns").addEventListener("click",e=>{const b=e.target.closest("[data-set]"); if(b){ SET=+b.dataset.set; showHome(); $("#home").scrollTop=0; }});
 $("#levels").addEventListener("click",e=>{const b=e.target.closest(".lvl"); if(b) openPuzzle(b.dataset.l);});
@@ -469,7 +521,8 @@ function nextLevel(){
 }
 function sizeCells(){
   const n=cur.p.a.length, avail=Math.min($(".playscroll").clientWidth||360,440)-8;
-  const cs=Math.max(24,Math.min(66,Math.floor((avail-3*(n-1))/n)));
+  const byHeight=Math.floor(($("#app").clientHeight||800)*0.075);
+  const cs=Math.max(24,Math.min(66,byHeight,Math.floor((avail-3*(n-1))/n)));
   $("#grid").style.setProperty("--cs",cs+"px");
 }
 window.addEventListener("resize",()=>{ if(cur) sizeCells(); });
@@ -547,26 +600,37 @@ function openSheet(html,cls){
   document.body.appendChild(s);
 }
 function closeSheet(){ const s=$("#scrim"); if(s) s.remove(); }
-function openInfo(){
-  openSheet(`<div class="sheethead"><span style="font-weight:900">How twisty works</span><button class="x" data-close aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg></button></div>
-  <p>Every cryptic clue is two clues stuck together. One part is a plain <span class="mark" style="background:var(--corn)">definition</span>, always at the very start or the very end. The rest is wordplay that builds the same answer a second way.</p>
-  <p>The wordplay has <span class="mark" style="background:var(--butter)">fodder</span>, the letters or words you work with, and usually an <span class="mark" style="background:var(--pink)">indicator</span> that says what to do with them.</p>
-  <h3>Common tricks</h3>
+const INFO_PAGES=[
+  `<h3>Two clues in one</h3>
+  <p>Every cryptic clue has a plain <span class="mark" style="background:var(--corn)">definition</span>, always at the very start or the very end. The rest is wordplay that builds the same answer a second way.</p>
+  <p>The wordplay uses <span class="mark" style="background:var(--butter)">fodder</span>, the letters or words you work with, and usually an <span class="mark" style="background:var(--pink)">indicator</span> that tells you what to do with them.</p>
+  <p>Example: <b>Pet hiding in scatter (3)</b>. Pet is the definition, “hiding in” is the indicator, and s<b>CAT</b>ter holds the answer.</p>`,
+  `<h3>Common tricks</h3>
   <ul>
     <li><b>Anagram</b>: “broken”, “wildly”, “out” mean shuffle the letters.</li>
-    <li><b>Hidden word</b>: “in”, “some of”, “seen in” mean the answer sits inside the clue's letters.</li>
-    <li><b>Reversal</b>: “returned”, “back”, “turning” mean read it backwards.</li>
-    <li><b>Container</b>: “keeps”, “holds”, “embraces” put one piece inside another.</li>
+    <li><b>Hidden word</b>: “in”, “seen in” mean the answer sits inside the clue.</li>
+    <li><b>Reversal</b>: “returned”, “back” mean read it backwards.</li>
+    <li><b>Container</b>: “keeps”, “holds” put one piece inside another.</li>
     <li><b>Charade</b>: pieces join end to end, like CAR + PET.</li>
-    <li><b>Homophone</b>: “reportedly”, “we hear” mean it sounds like something.</li>
-    <li><b>Abbreviations</b>: H for hospital, L for learner, G for good, ST for street, I for one.</li>
-  </ul>
-  <h3>Levels and par</h3>
-  <p>There's a new clue at each of the five levels every day, from Beginner up to Impossible. Par is the number of hints a solid solver needs at that level. Each hint you use fills a dot. Wrong guesses don't cost a hint.</p>
-  <h3>Scribble pad</h3>
-  <p>Tap the squiggle button to open a pad where you can pull letters out of the clue and push them around. The wheel arranges them in a circle, which makes anagrams easier to spot.</p>`,"info");
+    <li><b>Homophone</b>: “reportedly” means it sounds like something.</li>
+    <li><b>Short forms</b>: H hospital, L learner, G good, ST street, I one.</li>
+  </ul>`,
+  `<h3>Levels, par and the pad</h3>
+  <p>There's a new clue at each of the five levels every day, from Beginner up to Impossible. New clues arrive at midnight.</p>
+  <p>Par is how many hints a solid solver needs at that level. Each hint you use fills a dot. Wrong guesses are free.</p>
+  <p>The squiggle button opens a scribble pad for pulling letters out of the clue and moving them around. The circle button turns them into a wheel, which makes anagrams easier to spot.</p>`
+];
+function openInfo(pg){
+  const last=INFO_PAGES.length-1;
+  openSheet(`<div class="sheethead"><span style="font-weight:900">How twisty works</span><button class="x" data-close aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg></button></div>
+  ${INFO_PAGES[pg]}
+  <div class="infonav"><button class="pill alt" data-pg="${pg-1}" ${pg?"":"disabled"}>back</button>
+  <span class="pgdots" style="flex:1;justify-content:center">${INFO_PAGES.map((_,k)=>`<i class="${k===pg?"on":""}"></i>`).join("")}</span>
+  ${pg<last?`<button class="pill hints" data-pg="${pg+1}">next</button>`:`<button class="pill hints" data-close>done</button>`}</div>`,"info");
+  $("#scrim").addEventListener("click",e=>{const b=e.target.closest("[data-pg]"); if(b&&!b.disabled) openInfo(+b.dataset.pg);});
 }
-$("#infoBtn").onclick=openInfo; $("#learnBtn").onclick=openInfo;
+$("#infoBtn").onclick=()=>openInfo(0);
+$("#homefoot").addEventListener("click",e=>{ if(e.target.closest(".howto")) openInfo(0); });
 $("#back").onclick=showHome;
 
 /* ---------- keyboard ---------- */
@@ -673,6 +737,10 @@ function checkDuo(){
   document.documentElement.classList.toggle("duo-tall",isDuo&&!wide);
   if(cur) sizeCells();
 }
+function setHeight(){ document.documentElement.style.setProperty("--h",($("#app").clientHeight||innerHeight)+"px"); }
+setHeight();
+window.addEventListener("resize",setHeight);
+if(window.ResizeObserver) new ResizeObserver(()=>{ setHeight(); if(cur) sizeCells(); }).observe($("#app"));
 checkDuo();
 window.addEventListener("resize",checkDuo);
 window.addEventListener("orientationchange",checkDuo);
