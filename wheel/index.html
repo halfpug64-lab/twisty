@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Spinning Wheel Picker</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #1a1a2e;
+      color: #eee;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px 20px;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 30px;
+      color: #e94560;
+      letter-spacing: 2px;
+    }
+
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    /* ── Wheel ── */
+    .wheel-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .wheel-wrapper {
+      position: relative;
+      width: 400px;
+      height: 400px;
+    }
+
+    #wheel {
+      width: 400px;
+      height: 400px;
+      border-radius: 50%;
+      border: 6px solid #fff;
+      box-shadow: 0 0 30px rgba(233,69,96,0.5);
+    }
+
+    .pointer {
+      position: absolute;
+      top: 50%;
+      right: -22px;
+      transform: translateY(-50%);
+      width: 0;
+      height: 0;
+      border-top: 18px solid transparent;
+      border-bottom: 18px solid transparent;
+      border-right: 36px solid #e94560;
+      filter: drop-shadow(0 0 6px #e94560);
+      z-index: 10;
+    }
+
+    .center-cap {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 40px;
+      height: 40px;
+      background: #fff;
+      border-radius: 50%;
+      border: 4px solid #1a1a2e;
+      z-index: 10;
+    }
+
+    #spin-btn {
+      padding: 14px 48px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      background: #e94560;
+      color: #fff;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      letter-spacing: 1px;
+      box-shadow: 0 4px 20px rgba(233,69,96,0.5);
+      transition: transform 0.1s;
+    }
+
+    #spin-btn:hover:not(:disabled) { transform: scale(1.05); }
+    #spin-btn:active:not(:disabled) { transform: scale(0.97); }
+    #spin-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    #result {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #ffd700;
+      min-height: 2rem;
+      text-align: center;
+      text-shadow: 0 0 10px rgba(255,215,0,0.6);
+    }
+
+    /* ── Right column (names + rig panel) ── */
+    .right-column {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      width: 280px;
+    }
+
+    /* ── Names panel ── */
+    .names-section {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .panel-header h2 {
+      font-size: 1.1rem;
+      color: #aaa;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    #name-input {
+      flex: 1;
+      padding: 10px 14px;
+      border-radius: 8px;
+      border: 2px solid #333;
+      background: #16213e;
+      color: #eee;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    #name-input:focus { border-color: #e94560; }
+
+    #add-btn {
+      padding: 10px 16px;
+      border-radius: 8px;
+      border: none;
+      background: #e94560;
+      color: #fff;
+      font-size: 1.2rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    #add-btn:hover { background: #c73652; }
+
+    #names-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 280px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    #names-list::-webkit-scrollbar { width: 5px; }
+    #names-list::-webkit-scrollbar-thumb { background: #444; border-radius: 4px; }
+
+    #names-list li {
+      display: flex;
+      align-items: center;
+      background: #16213e;
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 0.95rem;
+      gap: 8px;
+    }
+
+    #names-list li .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    #names-list li .name-text { flex: 1; }
+
+    #names-list li .remove-btn {
+      background: none;
+      border: none;
+      color: #e94560;
+      cursor: pointer;
+      font-size: 1rem;
+      padding: 0 2px;
+      line-height: 1;
+      transition: color 0.2s;
+    }
+
+    #names-list li .remove-btn:hover { color: #ff8fa3; }
+
+    .empty-msg {
+      color: #555;
+      font-size: 0.9rem;
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    /* ── Rig panel toggle button ── */
+    #rig-toggle {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border-radius: 10px;
+      border: 2px solid #533483;
+      background: transparent;
+      color: #c77dff;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      letter-spacing: 0.5px;
+      transition: background 0.2s, border-color 0.2s;
+      width: 100%;
+      justify-content: center;
+    }
+
+    #rig-toggle:hover { background: rgba(83,52,131,0.3); }
+    #rig-toggle.active { background: rgba(83,52,131,0.5); border-color: #c77dff; }
+
+    #rig-toggle .rig-icon { font-size: 1rem; }
+
+    /* ── Rig panel ── */
+    #rig-panel {
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.35s ease, opacity 0.25s ease;
+      opacity: 0;
+    }
+
+    #rig-panel.open {
+      max-height: 600px;
+      opacity: 1;
+    }
+
+    .rig-inner {
+      background: #0f1b35;
+      border: 2px solid #533483;
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .rig-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .rig-header span {
+      font-size: 0.75rem;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    #reset-weights {
+      font-size: 0.75rem;
+      padding: 4px 10px;
+      border-radius: 6px;
+      border: 1px solid #533483;
+      background: none;
+      color: #c77dff;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    #reset-weights:hover { background: rgba(83,52,131,0.4); }
+
+    /* Rigged badge shown on wheel section */
+    #rigged-badge {
+      font-size: 0.75rem;
+      background: rgba(83,52,131,0.6);
+      border: 1px solid #c77dff;
+      color: #c77dff;
+      border-radius: 20px;
+      padding: 3px 10px;
+      letter-spacing: 0.5px;
+      display: none;
+    }
+
+    #rigged-badge.visible { display: inline-block; }
+
+    #rig-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 260px;
+      overflow-y: auto;
+      padding-right: 2px;
+    }
+
+    #rig-list::-webkit-scrollbar { width: 4px; }
+    #rig-list::-webkit-scrollbar-thumb { background: #533483; border-radius: 4px; }
+
+    #rig-list li {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    #rig-list li .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    #rig-list li .rig-name {
+      flex: 1;
+      font-size: 0.85rem;
+      color: #ccc;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    #rig-list li .weight-input {
+      width: 58px;
+      padding: 4px 8px;
+      border-radius: 6px;
+      border: 1px solid #333;
+      background: #16213e;
+      color: #eee;
+      font-size: 0.85rem;
+      text-align: center;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    #rig-list li .weight-input:focus { border-color: #c77dff; }
+
+    #rig-list li .pct-label {
+      width: 42px;
+      font-size: 0.8rem;
+      color: #c77dff;
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .rig-total {
+      display: flex;
+      justify-content: flex-end;
+      font-size: 0.8rem;
+      color: #666;
+      border-top: 1px solid #1e2d50;
+      padding-top: 8px;
+    }
+
+    .rig-total span { color: #c77dff; margin-left: 4px; }
+
+    .rig-note {
+      font-size: 0.75rem;
+      color: #555;
+      line-height: 1.4;
+    }
+
+    /* ── Modal ── */
+    #modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.75);
+      z-index: 100;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #modal.show { display: flex; }
+
+    .modal-box {
+      background: #16213e;
+      border: 3px solid #e94560;
+      border-radius: 16px;
+      padding: 40px 50px;
+      text-align: center;
+      box-shadow: 0 0 50px rgba(233,69,96,0.4);
+      animation: pop 0.3s ease;
+    }
+
+    @keyframes pop {
+      from { transform: scale(0.7); opacity: 0; }
+      to   { transform: scale(1);   opacity: 1; }
+    }
+
+    .modal-box p { color: #aaa; margin-bottom: 8px; font-size: 1rem; }
+    .modal-box h2 { font-size: 2.4rem; color: #ffd700; margin-bottom: 24px; text-shadow: 0 0 14px rgba(255,215,0,0.7); }
+
+    #modal-close {
+      padding: 10px 36px;
+      font-size: 1rem;
+      font-weight: 700;
+      background: #e94560;
+      color: #fff;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    #modal-close:hover { background: #c73652; }
+  </style>
+</head>
+<body>
+
+<h1>Spinning Wheel</h1>
+
+<div class="container">
+  <!-- Wheel -->
+  <div class="wheel-section">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;">
+      <span id="rigged-badge">RIGGED</span>
+    </div>
+    <div class="wheel-wrapper">
+      <canvas id="wheel" width="400" height="400"></canvas>
+      <div class="pointer"></div>
+      <div class="center-cap"></div>
+    </div>
+    <button id="spin-btn">SPIN</button>
+    <div id="result"></div>
+  </div>
+
+  <!-- Right column -->
+  <div class="right-column">
+    <!-- Names -->
+    <div class="names-section">
+      <div class="panel-header">
+        <h2>Names</h2>
+      </div>
+      <div class="input-row">
+        <input id="name-input" type="text" placeholder="Enter a name…" maxlength="30" />
+        <button id="add-btn">+</button>
+      </div>
+      <ul id="names-list"></ul>
+    </div>
+
+    <!-- Rig toggle -->
+    <button id="rig-toggle">
+      <span class="rig-icon">⚙</span> Rig the Chances
+    </button>
+
+    <!-- Rig panel -->
+    <div id="rig-panel">
+      <div class="rig-inner">
+        <div class="rig-header">
+          <span>Set weights per name</span>
+          <button id="reset-weights">Reset equal</button>
+        </div>
+        <ul id="rig-list"></ul>
+        <div class="rig-total">Total weight: <span id="total-weight">0</span></div>
+        <p class="rig-note">Higher weight = bigger slice = higher chance. Numbers don't need to add up to 100.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Winner modal -->
+<div id="modal">
+  <div class="modal-box">
+    <p>The wheel has chosen…</p>
+    <h2 id="modal-winner"></h2>
+    <button id="modal-close">Nice!</button>
+  </div>
+</div>
+
+<script>
+  const COLORS = [
+    '#e94560','#0f3460','#533483','#c77dff','#2b9348',
+    '#f77f00','#d62828','#023e8a','#7b2d8b','#4cc9f0',
+    '#06d6a0','#118ab2','#ffd166','#ef476f','#4361ee'
+  ];
+
+  const canvas      = document.getElementById('wheel');
+  const ctx         = canvas.getContext('2d');
+  const spinBtn     = document.getElementById('spin-btn');
+  const nameInput   = document.getElementById('name-input');
+  const addBtn      = document.getElementById('add-btn');
+  const namesList   = document.getElementById('names-list');
+  const resultEl    = document.getElementById('result');
+  const modal       = document.getElementById('modal');
+  const modalWinner = document.getElementById('modal-winner');
+  const modalClose  = document.getElementById('modal-close');
+  const rigToggle   = document.getElementById('rig-toggle');
+  const rigPanel    = document.getElementById('rig-panel');
+  const rigList     = document.getElementById('rig-list');
+  const totalWeightEl = document.getElementById('total-weight');
+  const resetBtn    = document.getElementById('reset-weights');
+  const riggedBadge = document.getElementById('rigged-badge');
+
+  // Each entry: { name: string, weight: number }
+  let entries = [
+    { name: 'Alice',   weight: 1 },
+    { name: 'Bob',     weight: 1 },
+    { name: 'Charlie', weight: 1 },
+    { name: 'Diana',   weight: 1 },
+  ];
+
+  let currentAngle = 0;
+  let spinning     = false;
+
+  // ── Helpers ────────────────────────────────────────────────
+  function totalWeight() {
+    return entries.reduce((s, e) => s + Math.max(0, e.weight || 0), 0);
+  }
+
+  function isRigged() {
+    if (entries.length === 0) return false;
+    const w = entries[0].weight;
+    return entries.some(e => e.weight !== w);
+  }
+
+  // Returns array of cumulative angle offsets (radians) for each slice start,
+  // and the slice size for each entry, based on weights.
+  function sliceAngles() {
+    const total = totalWeight();
+    const result = [];
+    let cumulative = 0;
+    for (const e of entries) {
+      const w = Math.max(0, e.weight || 0);
+      const angle = total > 0 ? (w / total) * Math.PI * 2 : (Math.PI * 2 / entries.length);
+      result.push({ start: cumulative, size: angle });
+      cumulative += angle;
+    }
+    return result;
+  }
+
+  // Weighted random — returns winning index
+  function weightedRandom() {
+    const total = totalWeight();
+    if (total === 0) return Math.floor(Math.random() * entries.length);
+    let r = Math.random() * total;
+    for (let i = 0; i < entries.length; i++) {
+      r -= Math.max(0, entries[i].weight || 0);
+      if (r <= 0) return i;
+    }
+    return entries.length - 1;
+  }
+
+  // ── Draw wheel ─────────────────────────────────────────────
+  function drawWheel() {
+    const cx = canvas.width / 2;
+    const cy = canvas.height / 2;
+    const r  = cx - 4;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    if (entries.length === 0) {
+      ctx.fillStyle = '#16213e';
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#555';
+      ctx.font = '18px Segoe UI';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('Add names to spin!', cx, cy);
+      return;
+    }
+
+    const slices = sliceAngles();
+
+    entries.forEach((entry, i) => {
+      const { start, size } = slices[i];
+      const absStart = currentAngle + start;
+      const absEnd   = absStart + size;
+      const color    = COLORS[i % COLORS.length];
+
+      // Slice fill
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.arc(cx, cy, r, absStart, absEnd);
+      ctx.closePath();
+      ctx.fillStyle = color;
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(255,255,255,0.25)';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      // Label — only draw if slice is wide enough
+      if (size > 0.12) {
+        ctx.save();
+        ctx.translate(cx, cy);
+        ctx.rotate(absStart + size / 2);
+        ctx.textAlign = 'right';
+        ctx.fillStyle = '#fff';
+        const fontSize = entries.length > 10 ? 11 : 14;
+        ctx.font = `bold ${fontSize}px Segoe UI`;
+        ctx.shadowColor = 'rgba(0,0,0,0.6)';
+        ctx.shadowBlur = 4;
+        const maxLen = 14;
+        const label = entry.name.length > maxLen ? entry.name.slice(0, maxLen - 1) + '…' : entry.name;
+        ctx.fillText(label, r - 14, 5);
+        ctx.restore();
+      }
+    });
+  }
+
+  // ── Names list ─────────────────────────────────────────────
+  function renderNamesList() {
+    namesList.innerHTML = '';
+    if (entries.length === 0) {
+      namesList.innerHTML = '<li class="empty-msg">No names yet</li>';
+      return;
+    }
+    entries.forEach((entry, i) => {
+      const li   = document.createElement('li');
+      const dot  = document.createElement('span');
+      dot.className = 'dot';
+      dot.style.background = COLORS[i % COLORS.length];
+
+      const span = document.createElement('span');
+      span.className = 'name-text';
+      span.textContent = entry.name;
+
+      const btn = document.createElement('button');
+      btn.className = 'remove-btn';
+      btn.textContent = '✕';
+      btn.title = 'Remove';
+      btn.addEventListener('click', () => {
+        entries.splice(i, 1);
+        refresh();
+        resultEl.textContent = '';
+      });
+
+      li.appendChild(dot);
+      li.appendChild(span);
+      li.appendChild(btn);
+      namesList.appendChild(li);
+    });
+  }
+
+  // ── Rig list ───────────────────────────────────────────────
+  function renderRigList() {
+    rigList.innerHTML = '';
+    const total = totalWeight();
+
+    entries.forEach((entry, i) => {
+      const li = document.createElement('li');
+
+      const dot = document.createElement('span');
+      dot.className = 'dot';
+      dot.style.background = COLORS[i % COLORS.length];
+
+      const nameSpan = document.createElement('span');
+      nameSpan.className = 'rig-name';
+      nameSpan.textContent = entry.name;
+      nameSpan.title = entry.name;
+
+      const input = document.createElement('input');
+      input.type = 'number';
+      input.className = 'weight-input';
+      input.min = '0';
+      input.max = '9999';
+      input.value = entry.weight;
+      input.title = 'Weight (higher = more likely)';
+      input.addEventListener('input', () => {
+        const v = parseFloat(input.value);
+        entries[i].weight = isNaN(v) || v < 0 ? 0 : v;
+        // Update just the % labels and total without full re-render (avoids focus loss)
+        updateRigPercentages();
+        drawWheel();
+        updateRiggedBadge();
+      });
+
+      const pct = document.createElement('span');
+      pct.className = 'pct-label';
+      pct.dataset.idx = i;
+      const p = total > 0 ? ((entry.weight / total) * 100).toFixed(1) : '0.0';
+      pct.textContent = p + '%';
+
+      li.appendChild(dot);
+      li.appendChild(nameSpan);
+      li.appendChild(input);
+      li.appendChild(pct);
+      rigList.appendChild(li);
+    });
+
+    totalWeightEl.textContent = total % 1 === 0 ? total : total.toFixed(2);
+  }
+
+  function updateRigPercentages() {
+    const total = totalWeight();
+    rigList.querySelectorAll('.pct-label').forEach(el => {
+      const i = parseInt(el.dataset.idx);
+      const p = total > 0 ? ((entries[i].weight / total) * 100).toFixed(1) : '0.0';
+      el.textContent = p + '%';
+    });
+    totalWeightEl.textContent = total % 1 === 0 ? total : total.toFixed(2);
+  }
+
+  function updateRiggedBadge() {
+    if (isRigged() && entries.length > 0) {
+      riggedBadge.classList.add('visible');
+    } else {
+      riggedBadge.classList.remove('visible');
+    }
+  }
+
+  function refresh() {
+    renderNamesList();
+    renderRigList();
+    drawWheel();
+    updateRiggedBadge();
+  }
+
+  // ── Add name ───────────────────────────────────────────────
+  function addName() {
+    const val = nameInput.value.trim();
+    if (!val) return;
+    entries.push({ name: val, weight: 1 });
+    nameInput.value = '';
+    refresh();
+    resultEl.textContent = '';
+  }
+
+  addBtn.addEventListener('click', addName);
+  nameInput.addEventListener('keydown', e => { if (e.key === 'Enter') addName(); });
+
+  // ── Reset weights ──────────────────────────────────────────
+  resetBtn.addEventListener('click', () => {
+    entries.forEach(e => e.weight = 1);
+    renderRigList();
+    drawWheel();
+    updateRiggedBadge();
+  });
+
+  // ── Rig panel toggle ───────────────────────────────────────
+  rigToggle.addEventListener('click', () => {
+    const open = rigPanel.classList.toggle('open');
+    rigToggle.classList.toggle('active', open);
+    if (open) renderRigList();
+  });
+
+  // ── Spin ───────────────────────────────────────────────────
+  spinBtn.addEventListener('click', () => {
+    if (spinning || entries.length === 0) return;
+    spinning = true;
+    spinBtn.disabled = true;
+    resultEl.textContent = '';
+
+    const winnerIdx = weightedRandom();
+    const slices    = sliceAngles();
+    const { start, size } = slices[winnerIdx];
+
+    // We want pointer (at angle π from centre) to point at middle of winner slice.
+    // After spinning, currentAngle will be some value. The winner slice centre
+    // sits at currentAngle + start + size/2. We need that ≡ π (mod 2π).
+    const extraSpins = (5 + Math.floor(Math.random() * 5)) * Math.PI * 2;
+    let targetBase = Math.PI - start - size / 2;
+    while (targetBase < currentAngle + extraSpins - Math.PI * 2) targetBase += Math.PI * 2;
+    const targetAngle = targetBase + extraSpins;
+
+    const duration  = 4000 + Math.random() * 1000;
+    const startAngle = currentAngle;
+    const startTime  = performance.now();
+
+    function easeOut(t) { return 1 - Math.pow(1 - t, 4); }
+
+    function animate(now) {
+      const t = Math.min((now - startTime) / duration, 1);
+      currentAngle = startAngle + (targetAngle - startAngle) * easeOut(t);
+      drawWheel();
+      if (t < 1) {
+        requestAnimationFrame(animate);
+      } else {
+        currentAngle = targetAngle % (Math.PI * 2);
+        drawWheel();
+        spinning = false;
+        spinBtn.disabled = false;
+        const winner = entries[winnerIdx].name;
+        resultEl.textContent = `Winner: ${winner}`;
+        modalWinner.textContent = winner;
+        modal.classList.add('show');
+      }
+    }
+
+    requestAnimationFrame(animate);
+  });
+
+  modalClose.addEventListener('click', () => modal.classList.remove('show'));
+  modal.addEventListener('click', e => { if (e.target === modal) modal.classList.remove('show'); });
+
+  // ── Init ───────────────────────────────────────────────────
+  refresh();
+</script>
+</body>
+</html>
