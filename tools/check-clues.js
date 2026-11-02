@@ -26,6 +26,8 @@ function check(where, c, level) {
   if (t === "reversal" && letters(fod).split("").reverse().join("") !== c.a) fail(where, `"${fod}" reversed is not ${c.a}`);
   if (seen.has(c.a)) fail(where, `answer ${c.a} already used at ${seen.get(c.a)}`); else seen.set(c.a, where);
 }
+// Answers used as examples in the tutorial, so they never appear as real clues
+for (const a of ["HAT", "POTS", "BIN", "PANCAKE", "BOAT", "NIGHT"]) seen.set(a, "tutorial");
 for (const l of LEVELS) CLUES[l].forEach((c, i) => check(`rotation ${l} #${i + 1}`, c, l));
 BONUS.forEach((r, i) => LEVELS.forEach(l => r.clues[l] ? check(`bonus ${i + 1} ${l}`, r.clues[l], l) : fail(`bonus ${i + 1}`, "missing " + l)));
 
