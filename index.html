@@ -245,6 +245,36 @@ html.standalone body{position:fixed;inset:0}
 /* Home screen app: nudge everything 6px to the right so the left edge isn't clipped */
 @media (display-mode: standalone){ #app{padding-left:calc(max(16px,env(safe-area-inset-left,0px)) + 6px);padding-right:calc(max(16px,env(safe-area-inset-right,0px)) - 6px)} }
 html.standalone #app{padding-left:calc(max(16px,env(safe-area-inset-left,0px)) + 6px);padding-right:calc(max(16px,env(safe-area-inset-right,0px)) - 6px)}
+/* ---------- Beginner tutorial ---------- */
+#tut{position:fixed;inset:0;z-index:50;background:var(--sky);display:flex;justify-content:center;
+  padding:calc(env(safe-area-inset-top,0px) + clamp(10px,calc(var(--h,800px)*.02),20px)) max(16px,env(safe-area-inset-right,0px)) max(14px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.tutin{width:100%;max-width:540px;display:flex;flex-direction:column;gap:clamp(8px,calc(var(--h,800px)*.018),18px);min-height:0}
+.tuthead{display:flex;align-items:center;gap:10px}
+.tutsteps{flex:1;display:flex;gap:6px}
+.tutsteps i{flex:1;height:6px;border-radius:3px;background:rgba(255,255,255,.6)}
+.tutsteps i.on{background:var(--ink)}
+.tutskip{font-weight:800;text-decoration:underline;text-underline-offset:3px;font-size:15px;padding:8px 2px}
+.tutbody{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:clamp(10px,calc(var(--h,800px)*.022),22px)}
+.tutbody h2{margin:0;font-family:var(--display);font-style:italic;font-weight:900;font-size:clamp(26px,calc(var(--h,800px)*.045),38px);line-height:1.1;text-wrap:balance}
+.tutbody p{margin:0;font-size:clamp(15px,calc(var(--h,800px)*.025),19px);line-height:1.45;font-weight:500;max-width:46ch}
+.tutbody .cluecard{border:3px solid var(--ink)}
+.tutlist{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:clamp(6px,calc(var(--h,800px)*.012),10px)}
+.tutlist li{background:var(--paper);border-radius:12px;padding:clamp(8px,calc(var(--h,800px)*.014),12px) 14px;font-size:clamp(14px,calc(var(--h,800px)*.023),17px);line-height:1.35}
+.tutplay{display:flex;flex-direction:column;align-items:center;gap:clamp(8px,calc(var(--h,800px)*.016),14px)}
+.tboxes{display:flex;border:4px solid var(--ink);border-radius:9px;overflow:hidden;background:var(--paper)}
+.tboxes span{width:clamp(40px,calc(var(--h,800px)*.065),56px);height:clamp(40px,calc(var(--h,800px)*.065),56px);display:grid;place-items:center;font-weight:900;font-size:clamp(20px,calc(var(--h,800px)*.034),28px);border-right:3px solid var(--ink)}
+.tboxes span:last-child{border-right:0}
+.tboxes.good span{background:var(--mint)}
+.tboxes.shake{animation:shake .4s}
+.ttiles{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+.ttile{width:clamp(38px,calc(var(--h,800px)*.058),48px);height:clamp(38px,calc(var(--h,800px)*.058),48px);border:3px solid var(--ink);border-radius:9px;background:var(--butter);font-weight:900;font-size:clamp(18px,calc(var(--h,800px)*.03),24px);box-shadow:3px 3px 0 var(--ink)}
+.ttile:disabled{opacity:.25;box-shadow:none}
+.tutmsg{min-height:1.4em;font-weight:800;font-size:clamp(14px,calc(var(--h,800px)*.023),17px);text-align:center}
+.tutsmall{display:flex;gap:16px}
+.tutsmall button{font-weight:800;text-decoration:underline;text-underline-offset:3px;font-size:15px;padding:4px}
+.tutnav{display:flex;gap:12px}
+.tutnav .pill{max-width:none;height:clamp(46px,calc(var(--h,800px)*.068),58px);font-size:clamp(20px,calc(var(--h,800px)*.032),26px)}
+.tutnav .pill[disabled]{opacity:.35;box-shadow:none}
 /* iPhone Duo opened: split into two panes with a clear gap down the middle so nothing sits on the fold. Only turned on by the check in the script below. */
 html.duo #app{--crease:72px;max-width:1180px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);column-gap:var(--crease)}
 html.duo .bar{grid-column:1/-1}
@@ -290,6 +320,12 @@ html.duo .donecard .why{font-size:19px}
     <div class="homefoot" id="homefoot"></div>
     <div class="bonusbtns" id="bonusBtns"></div>
   </main>
+
+  <section id="tut" hidden aria-label="Tutorial"><div class="tutin">
+    <div class="tuthead"><div class="tutsteps" id="tutSteps"></div><button class="tutskip" id="tutSkip" type="button">Skip</button></div>
+    <div class="tutbody" id="tutBody"></div>
+    <div class="tutnav"><button class="pill alt" id="tutBack" type="button">back</button><button class="pill hints" id="tutNext" type="button">next</button></div>
+  </div></section>
 
   <main id="play" hidden>
     <div class="playscroll">
@@ -498,7 +534,7 @@ function showHome(){
   }).join("");
   save();
   const s=streak();
-  $("#homefoot").innerHTML=`<span><b>${solved}/5</b> ${SET?"bonus solved":"solved today"}</span><span><b>${s}</b> day streak</span><button class="howto" type="button">How to play</button>`;
+  $("#homefoot").innerHTML=`<span><b>${solved}/5</b> ${SET?"bonus solved":"solved today"}</span><span><b>${s}</b> day streak</span><button class="howto" type="button">Tutorial</button>`;
 }
 $("#bonusBtns").addEventListener("click",e=>{const b=e.target.closest("[data-set]"); if(b){ SET=+b.dataset.set; showHome(); $("#home").scrollTop=0; }});
 $("#levels").addEventListener("click",e=>{const b=e.target.closest(".lvl"); if(b) openPuzzle(b.dataset.l);});
@@ -632,7 +668,7 @@ const INFO_PAGES=[
   `<h3>Two clues in one</h3>
   <p>Every cryptic clue has a plain <span class="mark" style="background:var(--corn)">definition</span>, always at the very start or the very end. The rest is wordplay that builds the same answer a second way.</p>
   <p>The wordplay uses <span class="mark" style="background:var(--butter)">fodder</span>, the letters or words you work with, and usually an <span class="mark" style="background:var(--pink)">indicator</span> that tells you what to do with them.</p>
-  <p>Example: <b>Pet hiding in scatter (3)</b>. Pet is the definition, “hiding in” is the indicator, and s<b>CAT</b>ter holds the answer.</p>`,
+  <p>New to this? <button class="howto" data-tut type="button" style="margin:0">Take the 1-minute tutorial</button></p>`,
   `<h3>Common tricks</h3>
   <ul>
     <li><b>Anagram</b>: “broken”, “wildly”, “out” mean shuffle the letters.</li>
@@ -655,11 +691,96 @@ function openInfo(pg){
   <div class="infonav"><button class="pill alt" data-pg="${pg-1}" ${pg?"":"disabled"}>back</button>
   <span class="pgdots" style="flex:1;justify-content:center">${INFO_PAGES.map((_,k)=>`<i class="${k===pg?"on":""}"></i>`).join("")}</span>
   ${pg<last?`<button class="pill hints" data-pg="${pg+1}">next</button>`:`<button class="pill hints" data-close>done</button>`}</div>`,"info");
-  $("#scrim").addEventListener("click",e=>{const b=e.target.closest("[data-pg]"); if(b&&!b.disabled) openInfo(+b.dataset.pg);});
+  $("#scrim").addEventListener("click",e=>{const b=e.target.closest("[data-pg]"); if(b&&!b.disabled) openInfo(+b.dataset.pg); if(e.target.closest("[data-tut]")){ closeSheet(); openTutorial(); }});
 }
 $("#infoBtn").onclick=()=>openInfo(0);
-$("#homefoot").addEventListener("click",e=>{ if(e.target.closest(".howto")) openInfo(0); });
+$("#homefoot").addEventListener("click",e=>{ if(e.target.closest(".howto")) openTutorial(); });
 $("#back").onclick=showHome;
+
+/* ---------- beginner tutorial ---------- */
+const TUT_KEY="twisty-tutorial-done";
+const TUT_HIDDEN={c:"[d:Headwear] [i:inside] [f:that tent]",a:"HAT"};
+const TUT_ANAGRAM={c:"[f:Stop] [i:messed up], [d:jars]",a:"POTS"};
+const TUT=[
+  {title:"Two clues in one",
+   body:()=>`<p>A cryptic clue has two parts. One part is a plain <b>definition</b> of the answer. The rest is <b>wordplay</b> that builds the same answer a second way.</p>
+     <div class="cluecard">${clueHTML(TUT_HIDDEN)}</div>
+     <p>Let's solve this one together. The (3) means the answer has 3 letters.</p>`},
+  {title:"Find the definition",
+   body:()=>`<div class="cluecard show-d">${clueHTML(TUT_HIDDEN)}</div>
+     <p>The definition is always at the very <b>start</b> or the very <b>end</b> of the clue. Here it's <span class="mark" style="background:var(--corn)">Headwear</span>.</p>
+     <p>So we want a 3-letter word for headwear.</p>`},
+  {title:"Spot the indicator",
+   body:()=>`<div class="cluecard show-d show-i">${clueHTML(TUT_HIDDEN)}</div>
+     <p>An <span class="mark" style="background:var(--pink)">indicator</span> tells you what to do. <b>“Inside”</b> means the answer is hiding inside the next words, letter for letter.</p>`},
+  {title:"Find it in the fodder",
+   play:{clue:TUT_HIDDEN,tiles:[..."THATTENT"],solve:"Tap the letters that spell headwear, in order."},
+   body:()=>`<div class="cluecard show-d show-i show-f">${clueHTML(TUT_HIDDEN)}</div>
+     <p>The <span class="mark" style="background:var(--butter)">fodder</span> is the raw material: <b>that tent</b>. Run the letters together and look inside.</p>`},
+  {title:"Now an anagram",
+   play:{clue:TUT_ANAGRAM,tiles:[..."STOP"],solve:"Rearrange the letters to make jars."},
+   body:()=>`<div class="cluecard show-d show-i show-f">${clueHTML(TUT_ANAGRAM)}</div>
+     <p><b>“Messed up”</b> means shuffle the letters of <b>STOP</b>. The definition at the end is <b>jars</b>.</p>`},
+  {title:"Other tricks you'll meet",
+   body:()=>`<ul class="tutlist">
+     <li><b>Reversal</b>: “back” or “returned” means read it backwards. NIB back = BIN.</li>
+     <li><b>Charade</b>: pieces join up. Skillet (PAN) + dessert (CAKE) = PANCAKE.</li>
+     <li><b>Container</b>: “keeps” or “holds” puts one piece inside another. BAT holds O = BOAT.</li>
+     <li><b>Sounds like</b>: “we hear” or “reportedly”. KNIGHT, we hear, is NIGHT.</li>
+     <li><b>Short forms</b>: H hospital, L learner, G good, ST street, I one.</li>
+   </ul>`},
+  {title:"Stuck? Use hints",
+   body:()=>`<p>In every puzzle, <b>hints</b> can light up the definition, the indicator or the fodder in the same colors you just saw. You can also reveal a letter.</p>
+     <p><b>Par</b> is how many hints a good solver needs at that level. Wrong guesses are free, so guess away.</p>
+     <p>The squiggle button opens a <b>scribble pad</b> for moving letters around.</p>`,
+   last:true},
+];
+let tutStep=0, tutState=null;
+function openTutorial(){ tutStep=0; $("#tut").hidden=false; renderTut(); }
+function closeTutorial(){ $("#tut").hidden=true; try{ localStorage.setItem(TUT_KEY,"1"); }catch(e){} }
+function renderTut(){
+  const st=TUT[tutStep];
+  $("#tutSteps").innerHTML=TUT.map((_,i)=>`<i class="${i<=tutStep?"on":""}"></i>`).join("");
+  let html=`<h2>${st.title}</h2>${st.body()}`;
+  if(st.play){
+    tutState={picked:[],done:tutState&&tutState.step===tutStep&&tutState.done,step:tutStep};
+    html+=`<div class="tutplay"><div class="tboxes" id="tBoxes">${[...st.play.clue.a].map(()=>"<span></span>").join("")}</div>
+      <div class="ttiles" id="tTiles">${st.play.tiles.map((ch,i)=>`<button class="ttile" type="button" data-i="${i}">${ch}</button>`).join("")}</div>
+      <div class="tutmsg" id="tMsg">${st.play.solve}</div>
+      <div class="tutsmall"><button type="button" id="tUndo">Undo</button><button type="button" id="tShow">Show me</button></div></div>`;
+  } else tutState=null;
+  $("#tutBody").innerHTML=html;
+  $("#tutBack").disabled=tutStep===0;
+  $("#tutNext").textContent=st.last?"let's play":"next";
+  if(st.play){ if(tutState.done) tutFill(st.play.clue.a,true); else $("#tutNext").disabled=true; }
+  else $("#tutNext").disabled=false;
+}
+function tutFill(word,good){
+  const boxes=[...document.querySelectorAll("#tBoxes span")];
+  boxes.forEach((b,i)=>b.textContent=word[i]||"");
+  if(good){ $("#tBoxes").classList.add("good"); $("#tMsg").textContent="That's it! "+(tutStep===3?"H-A-T was hiding in t(HAT) tent.":"STOP rearranges to POTS."); $("#tutNext").disabled=false;
+    document.querySelectorAll(".ttile").forEach(t=>t.disabled=true); tutState.done=true; }
+}
+$("#tutBody").addEventListener("click",e=>{
+  const st=TUT[tutStep]; if(!st.play||tutState.done) return;
+  const ans=st.play.clue.a, tiles=st.play.tiles;
+  const t=e.target.closest(".ttile");
+  if(t&&!t.disabled){
+    tutState.picked.push(+t.dataset.i); t.disabled=true;
+    const word=tutState.picked.map(i=>tiles[i]).join("");
+    tutFill(word,false);
+    if(word.length===ans.length){
+      if(word===ans) tutFill(ans,true);
+      else { const b=$("#tBoxes"); b.classList.remove("shake"); void b.offsetWidth; b.classList.add("shake");
+        $("#tMsg").textContent="Not quite. Try again."; setTimeout(()=>{ if(!tutState||tutState.done) return; tutState.picked=[]; tutFill("",false); document.querySelectorAll(".ttile").forEach(x=>x.disabled=false); },650); }
+    }
+  }
+  if(e.target.closest("#tUndo")&&tutState.picked.length){ const i=tutState.picked.pop(); document.querySelector(`.ttile[data-i="${i}"]`).disabled=false; tutFill(tutState.picked.map(i=>tiles[i]).join(""),false); }
+  if(e.target.closest("#tShow")) tutFill(ans,true);
+});
+$("#tutNext").onclick=()=>{ if(TUT[tutStep].last){ closeTutorial(); showHome(); openPuzzle("beginner"); } else { tutStep++; renderTut(); } };
+$("#tutBack").onclick=()=>{ if(tutStep){ tutStep--; renderTut(); } };
+$("#tutSkip").onclick=closeTutorial;
 
 /* ---------- keyboard ---------- */
 const ROWS=["QWERTYUIOP","ASDFGHJKL","ZXCVBNM"];
@@ -673,7 +794,7 @@ function press(k){
 document.addEventListener("keydown",e=>{
   if(e.metaKey||e.ctrlKey||e.altKey) return;
   if(e.key==="Escape"){ if($("#scrim")) closeSheet(); else if(!$("#pad").hidden) closePad(); return; }
-  if(!cur||$("#scrim")) return;
+  if(!cur||$("#scrim")||!$("#tut").hidden) return;
   if(/^[a-z]$/i.test(e.key)){ e.preventDefault(); press(e.key.toUpperCase()); }
   else if(e.key==="Backspace"){ e.preventDefault(); press("BACK"); }
   else if(e.key==="Enter"&&$("#pad").hidden&&!cur.st.solved&&!e.target.closest("button")){ e.preventDefault(); press("ENTER"); }
@@ -780,6 +901,9 @@ window.addEventListener("orientationchange",checkDuo);
 window.addEventListener("hashchange",checkDuo);
 
 showHome();
+(function(){ let seen=false; try{ seen=!!localStorage.getItem(TUT_KEY); }catch(e){}
+  const played=Object.values(DB.days).some(d=>Object.values(d).some(v=>v.solved||v.hints||v.entry.some(Boolean)));
+  if(!seen&&!played) openTutorial(); })();
 if("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(()=>{});
 </script>
 </body>
