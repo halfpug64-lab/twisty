@@ -24,4 +24,11 @@ window.TWISTY_DAILY = {
     hard: {c:"[d:Doctor's case]: [f:tap] [i:back], [f:one] [f:ear specialist]", a:"PATIENT", t:"Charade", x:"TAP read back is PAT, one = I, ear specialist = ENT. PAT + I + ENT = PATIENT, a doctor's case."},
     impossible: {c:"[f:Smart] [i:leader axed] with a [d:pry bar]", a:"LEVER", t:"Deletion", x:"Smart = CLEVER. Axe its leader, the C, and LEVER is left, a bar you pry with. The surface makes you picture a fight, not a word."},
   },
+  "2026-11-04": {
+    beginner: {c:"[d:What you're called]: [f:mean], [i:shuffled]", a:"NAME", t:"Anagram", x:"“Shuffled” tells you to rearrange MEAN. The letters make NAME, what you're called."},
+    easy: {c:"[f:Doom] [i:turned around] is a [d:frame of mind]", a:"MOOD", t:"Reversal", x:"“Turned around” means read DOOM backwards. It gives MOOD, a frame of mind."},
+    medium: {c:"[d:Penalty] that's [d:all right]", a:"FINE", t:"Double definition", x:"Two meanings, one word. A fine is a penalty, and fine also means all right."},
+    hard: {c:"[d:Extra] [f:average] [i:found in] [f:the Southeast]", a:"SPARE", t:"Container", x:"Average = PAR. Southeast = SE. PAR goes inside SE: S(PAR)E. Spare means extra."},
+    impossible: {c:"[f:Not] [f:skilled]? [d:Remarkable]!", a:"NOTABLE", t:"Charade", x:"Skilled = ABLE. NOT + ABLE = NOTABLE, which means remarkable. The surface sounds like a sarcastic insult, so you miss that the words just join up."},
+  },
 };
