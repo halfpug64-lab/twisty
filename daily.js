@@ -25,10 +25,10 @@ window.TWISTY_DAILY = {
     impossible: {c:"[f:Smart] [i:leader axed] with a [d:pry bar]", a:"LEVER", t:"Deletion", x:"Smart = CLEVER. Axe its leader, the C, and LEVER is left, a bar you pry with. The surface makes you picture a fight, not a word."},
   },
   "2026-11-04": {
-    beginner: {c:"[d:What you're called]: [f:mean], [i:shuffled]", a:"NAME", t:"Anagram", x:"“Shuffled” tells you to rearrange MEAN. The letters make NAME, what you're called."},
-    easy: {c:"[f:Doom] [i:turned around] is a [d:frame of mind]", a:"MOOD", t:"Reversal", x:"“Turned around” means read DOOM backwards. It gives MOOD, a frame of mind."},
-    medium: {c:"[d:Penalty] that's [d:all right]", a:"FINE", t:"Double definition", x:"Two meanings, one word. A fine is a penalty, and fine also means all right."},
-    hard: {c:"[d:Extra] [f:average] [i:found in] [f:the Southeast]", a:"SPARE", t:"Container", x:"Average = PAR. Southeast = SE. PAR goes inside SE: S(PAR)E. Spare means extra."},
-    impossible: {c:"[f:Not] [f:skilled]? [d:Remarkable]!", a:"NOTABLE", t:"Charade", x:"Skilled = ABLE. NOT + ABLE = NOTABLE, which means remarkable. The surface sounds like a sarcastic insult, so you miss that the words just join up."},
+    beginner: {c:"[d:Hi] [i:from inside] [f:a shell, oyster]!", a:"HELLO", t:"Hidden word", x:"“From inside” means the answer is hiding in the next words: a s(HELL O)yster. Hello means hi, so the oyster really is saying hi from inside its shell."},
+    easy: {c:"[d:Bambi] [i:backing up] into a [f:reed]", a:"DEER", t:"Reversal", x:"“Backing up” means read REED backwards. It gives DEER, and Bambi is a deer."},
+    medium: {c:"[d:Lemonade holder] [d:on the mound]", a:"PITCHER", t:"Double definition", x:"Two meanings, one word. A pitcher holds lemonade, and the pitcher is the player on the mound in baseball."},
+    hard: {c:"[d:Whiskers]: [f:Arkansas] [i:tucked into] [f:bed]", a:"BEARD", t:"Container", x:"Arkansas = AR. It gets “tucked into” BED: BE(AR)D. A beard is whiskers."},
+    impossible: {c:"[f:Agreement]: [f:one] [f:on] a [d:squeeze box]", a:"ACCORDION", t:"Charade", x:"Agreement = ACCORD, one = I, then ON. ACCORD + I + ON = ACCORDION, a squeeze box. The surface reads like a contract, so the instrument sneaks up on you."},
   },
 };
