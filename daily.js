@@ -18,11 +18,11 @@ window.TWISTY_DAILY = {
     impossible: {c:"[f:The margin] [i:warped] into a [d:bad dream]", a:"NIGHTMARE", t:"Anagram", x:"“Warped” tells you to rearrange THE MARGIN. Those nine letters make NIGHTMARE, a bad dream."},
   },
   "2026-11-03": {
-    beginner: {c:"[d:Noah's boat] [i:hidden in] [f:the park]", a:"ARK", t:"Hidden word", x:"“Hidden in” means the answer is tucked inside the next words: the p(ARK). The ark was Noah's boat."},
-    easy: {c:"[d:Where you live], [i:initially] [f:having only modest expenses]", a:"HOME", t:"First letters", x:"“Initially” means take the first letters: Having Only Modest Expenses gives H, O, M, E. Home is where you live."},
-    medium: {c:"[d:Flower] [f:rows], [i:it's said]", a:"ROSE", t:"Homophone", x:"“It's said” means it sounds like another word. ROSE sounds like ROWS, and a rose is a flower."},
-    hard: {c:"[d:Doctor's case]: [f:tap] [i:back], [f:one] [f:ear specialist]", a:"PATIENT", t:"Charade", x:"TAP read back is PAT, one = I, ear specialist = ENT. PAT + I + ENT = PATIENT, a doctor's case."},
-    impossible: {c:"[f:Smart] [i:leader axed] with a [d:pry bar]", a:"LEVER", t:"Deletion", x:"Smart = CLEVER. Axe its leader, the C, and LEVER is left, a bar you pry with. The surface makes you picture a fight, not a word."},
+    beginner: {c:"[d:Big bird] [i:spotted in] [f:the museum]", a:"EMU", t:"Hidden word", x:"“Spotted in” means the answer is hiding inside the next words: th(E MU)seum. An emu is a big bird, not the yellow one from Sesame Street."},
+    easy: {c:"[f:Snoops] [i:back] away from the [d:cutlery]", a:"SPOONS", t:"Reversal", x:"“Back” means read SNOOPS backwards. It gives SPOONS, which is cutlery."},
+    medium: {c:"[i:Say] you [f:need] to [d:work the dough]", a:"KNEAD", t:"Homophone", x:"“Say” means it sounds like another word. KNEAD sounds like NEED, and to knead is to work the dough."},
+    hard: {c:"[f:Toddler]'s [f:sidekick]? [d:Absolutely]!", a:"TOTALLY", t:"Charade", x:"Toddler = TOT, sidekick = ALLY. TOT + ALLY = TOTALLY, which means absolutely."},
+    impossible: {c:"[f:Smile]? [i:Start skipping], [d:it's a long way]", a:"MILE", t:"Deletion", x:"“Start skipping” means drop the first letter of SMILE, leaving MILE. A mile is a long way. It reads like cheery advice about jump rope, which is the trap."},
   },
   "2026-11-04": {
     beginner: {c:"[d:Hi] [i:from inside] [f:a shell, oyster]!", a:"HELLO", t:"Hidden word", x:"“From inside” means the answer is hiding in the next words: a s(HELL O)yster. Hello means hi, so the oyster really is saying hi from inside its shell."},
