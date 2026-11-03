@@ -22,13 +22,13 @@ window.TWISTY_DAILY = {
     easy: {c:"[f:Snoops] [i:back] away from the [d:cutlery]", a:"SPOONS", t:"Reversal", x:"“Back” means read SNOOPS backwards. It gives SPOONS, which is cutlery."},
     medium: {c:"[i:Say] you [f:need] to [d:work the dough]", a:"KNEAD", t:"Homophone", x:"“Say” means it sounds like another word. KNEAD sounds like NEED, and to knead is to work the dough."},
     hard: {c:"[f:Toddler]'s [f:sidekick]? [d:Absolutely]!", a:"TOTALLY", t:"Charade", x:"Toddler = TOT, sidekick = ALLY. TOT + ALLY = TOTALLY, which means absolutely."},
-    impossible: {c:"[f:Smile]? [i:Start skipping], [d:it's a long way]", a:"MILE", t:"Deletion", x:"“Start skipping” means drop the first letter of SMILE, leaving MILE. A mile is a long way. It reads like cheery advice about jump rope, which is the trap."},
+    impossible: {c:"Her [f:smile] [i:faded at first] after [d:a long run]", a:"MILE", t:"Deletion", x:"“Faded at first” means the first letter of SMILE disappears, leaving MILE. A mile is a long run. The surface makes you picture a tired runner, not a missing S."},
   },
   "2026-11-04": {
-    beginner: {c:"[d:Hi] [i:from inside] [f:a shell, oyster]!", a:"HELLO", t:"Hidden word", x:"“From inside” means the answer is hiding in the next words: a s(HELL O)yster. Hello means hi, so the oyster really is saying hi from inside its shell."},
+    beginner: {c:"[i:Inside] [f:a shell, oyster] says [d:hi]", a:"HELLO", t:"Hidden word", x:"“Inside” means the answer is hiding in the next words: a s(HELL O)yster. Hello means hi, so the oyster really is saying hi from inside its shell."},
     easy: {c:"[d:Bambi] [i:backing up] into a [f:reed]", a:"DEER", t:"Reversal", x:"“Backing up” means read REED backwards. It gives DEER, and Bambi is a deer."},
     medium: {c:"[d:Lemonade holder] [d:on the mound]", a:"PITCHER", t:"Double definition", x:"Two meanings, one word. A pitcher holds lemonade, and the pitcher is the player on the mound in baseball."},
-    hard: {c:"[d:Whiskers]: [f:Arkansas] [i:tucked into] [f:bed]", a:"BEARD", t:"Container", x:"Arkansas = AR. It gets “tucked into” BED: BE(AR)D. A beard is whiskers."},
-    impossible: {c:"[f:Agreement]: [f:one] [f:on] a [d:squeeze box]", a:"ACCORDION", t:"Charade", x:"Agreement = ACCORD, one = I, then ON. ACCORD + I + ON = ACCORDION, a squeeze box. The surface reads like a contract, so the instrument sneaks up on you."},
+    hard: {c:"[f:Toilet paper] [i:wrapped around] [f:Rhode Island]? Some [d:vacation]!", a:"TRIP", t:"Container", x:"Toilet paper = TP. Rhode Island = RI. TP gets wrapped around RI: T(RI)P. A trip is a vacation."},
+    impossible: {c:"[f:Peace treaty] signed, then [f:I] go [f:on] the [d:squeeze box]", a:"ACCORDION", t:"Charade", x:"Peace treaty = ACCORD. Then I, then ON. ACCORD + I + ON = ACCORDION, a squeeze box. It reads like a signing ceremony with music, so the wordplay hides in the story."},
   },
 };
