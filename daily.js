@@ -31,4 +31,11 @@ window.TWISTY_DAILY = {
     hard: {c:"[f:Toilet paper] [i:wrapped around] [f:Rhode Island]? Some [d:vacation]!", a:"TRIP", t:"Container", x:"Toilet paper = TP. Rhode Island = RI. TP gets wrapped around RI: T(RI)P. A trip is a vacation."},
     impossible: {c:"[f:Peace treaty] signed, then [f:I] go [f:on] the [d:squeeze box]", a:"ACCORDION", t:"Charade", x:"Peace treaty = ACCORD. Then I, then ON. ACCORD + I + ON = ACCORDION, a squeeze box. It reads like a signing ceremony with music, so the wordplay hides in the story."},
   },
+  "2026-11-05": {
+    beginner: {c:"[f:Peach] [i:mashed up] is [d:cheap]", a:"CHEAP", t:"Anagram", x:"“Mashed up” tells you to rearrange PEACH. The letters make CHEAP."},
+    easy: {c:"[f:Puppies always wave], [i:starting] with a [d:foot]", a:"PAW", t:"First letters", x:"“Starting” means take the first letters: Puppies Always Wave gives P, A, W. A paw is a foot."},
+    medium: {c:"[i:Sounds like] the [f:whole] gang fell in a [d:pit]", a:"HOLE", t:"Homophone", x:"“Sounds like” means it's a sound-alike. HOLE sounds like WHOLE, and a hole is a pit."},
+    hard: {c:"[f:Slam] the [f:district attorney]? That's [d:a bear]!", a:"PANDA", t:"Charade", x:"Slam = PAN (like a bad review), district attorney = DA. PAN + DA = PANDA, which is a bear. “That's a bear” sounds like “that's tough,” which is the trick."},
+    impossible: {c:"[f:Friends] [i:without] [f:right] are [d:demons]", a:"FIENDS", t:"Deletion", x:"Right = R. Take R out of FRIENDS and you get FIENDS, which are demons. It reads like a moral lesson, so you don't think to pull a letter out."},
+  },
 };
