@@ -24,6 +24,8 @@ function check(where, c, level) {
   if (t === "anagram" && sorted(fod) !== sorted(c.a)) fail(where, `anagram letters "${fod}" do not match ${c.a}`);
   if (t === "hidden word" && !letters(fod).includes(c.a)) fail(where, `${c.a} is not hidden in "${fod}"`);
   if (t === "reversal" && letters(fod).split("").reverse().join("") !== c.a) fail(where, `"${fod}" reversed is not ${c.a}`);
+  const words = stripped.toUpperCase().split(/[^A-Z]+/);
+  if (words.includes(c.a)) fail(where, `the answer ${c.a} appears as a word in its own clue`);
   if (seen.has(c.a)) fail(where, `answer ${c.a} already used at ${seen.get(c.a)}`); else seen.set(c.a, where);
 }
 // Answers used as examples in the tutorial, so they never appear as real clues

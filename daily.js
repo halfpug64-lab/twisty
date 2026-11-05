@@ -32,11 +32,11 @@ window.TWISTY_DAILY = {
     impossible: {c:"[f:Peace treaty] signed, then [f:I] go [f:on] the [d:squeeze box]", a:"ACCORDION", t:"Charade", x:"Peace treaty = ACCORD. Then I, then ON. ACCORD + I + ON = ACCORDION, a squeeze box. It reads like a signing ceremony with music, so the wordplay hides in the story."},
   },
   "2026-11-05": {
-    beginner: {c:"[f:Peach] [i:mashed up] is [d:cheap]", a:"CHEAP", t:"Anagram", x:"“Mashed up” tells you to rearrange PEACH. The letters make CHEAP."},
-    easy: {c:"[f:Puppies always wave], [i:starting] with a [d:foot]", a:"PAW", t:"First letters", x:"“Starting” means take the first letters: Puppies Always Wave gives P, A, W. A paw is a foot."},
-    medium: {c:"[i:Sounds like] the [f:whole] gang fell in a [d:pit]", a:"HOLE", t:"Homophone", x:"“Sounds like” means it's a sound-alike. HOLE sounds like WHOLE, and a hole is a pit."},
-    hard: {c:"[f:Slam] the [f:district attorney]? That's [d:a bear]!", a:"PANDA", t:"Charade", x:"Slam = PAN (like a bad review), district attorney = DA. PAN + DA = PANDA, which is a bear. “That's a bear” sounds like “that's tough,” which is the trick."},
-    impossible: {c:"[f:Friends] [i:without] [f:right] are [d:demons]", a:"FIENDS", t:"Deletion", x:"Right = R. Take R out of FRIENDS and you get FIENDS, which are demons. It reads like a moral lesson, so you don't think to pull a letter out."},
+    beginner: {c:"[d:River animal] [i:caught in] [f:hot terrain]", a:"OTTER", t:"Hidden word", x:"“Caught in” means the answer is hiding inside the next words: h(OT TER)rain. An otter is a river animal."},
+    easy: {c:"[f:Loop] [i:back] to the [d:swimming area]", a:"POOL", t:"Reversal", x:"“Back” means read LOOP backwards. It gives POOL, a swimming area. It reads like directions at a water park."},
+    medium: {c:"[d:Rabbit's cousin] has [f:hair], [i:we hear]", a:"HARE", t:"Homophone", x:"“We hear” means it sounds like another word. HARE sounds like HAIR, and a hare is a rabbit's cousin."},
+    hard: {c:"[f:Spread], then [f:take off] like a [d:pretty insect]", a:"BUTTERFLY", t:"Charade", x:"Spread = BUTTER (what you put on toast), take off = FLY. BUTTER + FLY = BUTTERFLY, a pretty insect. The surface makes you picture wings spreading."},
+    impossible: {c:"[f:Rip], then [f:fall]: a [d:sign of sadness]", a:"TEARDROP", t:"Charade", x:"Rip = TEAR (rhymes with bear), fall = DROP. TEAR + DROP = TEARDROP, a sign of sadness. The trick is that TEAR is a rip here, not crying."},
   },
   "2026-11-06": {
     beginner: {c:"[d:Pig] [i:spotted inside] the [f:shogun]'s castle!", a:"HOG", t:"Hidden word", x:"“Spotted inside” means the answer is hiding in the next word: s(HOG)un. A hog is a pig."},
