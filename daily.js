@@ -38,4 +38,11 @@ window.TWISTY_DAILY = {
     hard: {c:"[f:Slam] the [f:district attorney]? That's [d:a bear]!", a:"PANDA", t:"Charade", x:"Slam = PAN (like a bad review), district attorney = DA. PAN + DA = PANDA, which is a bear. “That's a bear” sounds like “that's tough,” which is the trick."},
     impossible: {c:"[f:Friends] [i:without] [f:right] are [d:demons]", a:"FIENDS", t:"Deletion", x:"Right = R. Take R out of FRIENDS and you get FIENDS, which are demons. It reads like a moral lesson, so you don't think to pull a letter out."},
   },
+  "2026-11-06": {
+    beginner: {c:"[d:Pig] [i:spotted inside] the [f:shogun]'s castle!", a:"HOG", t:"Hidden word", x:"“Spotted inside” means the answer is hiding in the next word: s(HOG)un. A hog is a pig."},
+    easy: {c:"[d:Demon] [f:lived] [i:backward]", a:"DEVIL", t:"Reversal", x:"“Backward” means read LIVED in reverse. It gives DEVIL, a demon. It reads like a spooky movie plot."},
+    medium: {c:"[f:Whine], [i:reportedly], [d:goes great with cheese]", a:"WINE", t:"Homophone", x:"“Reportedly” means it sounds like another word. WINE sounds like WHINE, and wine goes great with cheese."},
+    hard: {c:"Put a [f:ring] [i:in] the [f:cane] and [d:paddle]", a:"CANOE", t:"Container", x:"A ring is shaped like the letter O. Put O inside CANE: CAN(O)E. To canoe is to paddle."},
+    impossible: {c:"[d:Here] with a [d:gift]", a:"PRESENT", t:"Double definition", x:"Two meanings, one word. If you're here, you're present, and a gift is a present. It reads like someone showing up at a party, so you don't see the two definitions."},
+  },
 };
