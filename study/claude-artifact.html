@@ -827,12 +827,12 @@ async function runGeneration({ set, isNew, parts, images = [], nCats = '0', ui }
         queue.splice(0, 1, ...splitText(part.text, 2).map(t => ({ text: t, cards: half(part.cards), qs: half(part.qs), split: true })));
         total++; continue;
       }
-      if (['rate_limited', 'session_expired', 'not_granted', 'sampling_disabled', 'capability_disabled', 'not_declared'].includes(e?.code)) { stop = e; break; }
+      if (['rate_limited', 'session_expired', 'not_granted', 'sampling_disabled', 'capability_disabled', 'not_declared', 'no_key', 'bad_key', 'bad_model'].includes(e?.code)) { stop = e; break; }
       leftover.push(queue.shift()); done++; stop = stop || e;
     }
   }
   leftover.push(...queue.filter(p => p.text));
-  const blocked = ['rate_limited', 'session_expired', 'not_granted', 'sampling_disabled', 'cancelled'].includes(stop?.code);
+  const blocked = ['rate_limited', 'session_expired', 'not_granted', 'sampling_disabled', 'cancelled', 'no_key', 'bad_key', 'bad_model'].includes(stop?.code);
   if (getSet(set.id) && nCats !== '0' && !blocked) {
     const prompt = catPrompt(set, nCats);
     if (prompt) {
@@ -874,6 +874,9 @@ function aiError(e) {
     prompt_too_large: 'That part of the notes was too big to send. Try again.',
     invalid_json: 'Claude\'s answer came back incomplete. Try again.',
     full: 'This set is full.',
+    no_key: 'Add your AI key first: tap AI settings at the top.',
+    bad_key: 'Your AI key was turned down. Check it in AI settings.',
+    bad_model: 'That AI model name wasn\'t found. Clear the Model box in AI settings to use the default.',
     not_granted: 'This page was not allowed to use Claude. Allow it from the page\'s permissions to generate sets.',
     session_expired: 'Your claude.ai sign-in expired. Sign in again and retry.',
     image_rejected: 'One of the images could not be read. Try a different photo.',
