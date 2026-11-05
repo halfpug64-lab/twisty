@@ -1,0 +1,16 @@
+{
+  "name": "Studyhall",
+  "short_name": "Studyhall",
+  "description": "Turn your notes into flashcards, Learn mode, practice tests and games.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f3f5f9",
+  "theme_color": "#ffffff",
+  "icons": [
+    {"src": "icon-192-v1.png", "sizes": "192x192", "type": "image/png"},
+    {"src": "icon-512-v1.png", "sizes": "512x512", "type": "image/png"},
+    {"src": "icon-maskable-v1.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}
