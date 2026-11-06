@@ -45,4 +45,11 @@ window.TWISTY_DAILY = {
     hard: {c:"Put a [f:ring] [i:in] the [f:cane] and [d:paddle]", a:"CANOE", t:"Container", x:"A ring is shaped like the letter O. Put O inside CANE: CAN(O)E. To canoe is to paddle."},
     impossible: {c:"[d:Here] with a [d:gift]", a:"PRESENT", t:"Double definition", x:"Two meanings, one word. If you're here, you're present, and a gift is a present. It reads like someone showing up at a party, so you don't see the two definitions."},
   },
+  "2026-11-07": {
+    beginner: {c:"[d:Bird] [i:nesting in] [f:the newspaper]", a:"HEN", t:"Hidden word", x:"“Nesting in” means the answer is hiding inside the next words: t(HE N)ewspaper. A hen is a bird."},
+    easy: {c:"[d:Cozy corner] [i:at the front of] [f:Nana's old oak kitchen]", a:"NOOK", t:"First letters", x:"“At the front of” means take the first letters: Nana's Old Oak Kitchen gives N, O, O, K. A nook is a cozy corner."},
+    medium: {c:"[d:Fresh] [d:book]", a:"NOVEL", t:"Double definition", x:"Two meanings, one word. Novel means fresh or new, and a novel is a book."},
+    hard: {c:"[f:Group] [i:takes] [f:Republican] [d:label]", a:"BRAND", t:"Container", x:"Group = BAND. Republican = R. BAND takes R inside: B(R)AND. A brand is a label."},
+    impossible: {c:"[f:Planet] [i:runs out of] [f:time]? Take a [d:jet]", a:"PLANE", t:"Deletion", x:"Time = T. PLANET runs out of T, leaving PLANE, which is a jet. It reads like a sci-fi joke, so you miss the missing letter."},
+  },
 };
