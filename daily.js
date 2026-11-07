@@ -52,4 +52,11 @@ window.TWISTY_DAILY = {
     hard: {c:"[f:Group] [i:takes] [f:Republican] [d:label]", a:"BRAND", t:"Container", x:"Group = BAND. Republican = R. BAND takes R inside: B(R)AND. A brand is a label."},
     impossible: {c:"[f:Planet] [i:runs out of] [f:time]? Take a [d:jet]", a:"PLANE", t:"Deletion", x:"Time = T. PLANET runs out of T, leaving PLANE, which is a jet. It reads like a sci-fi joke, so you miss the missing letter."},
   },
+  "2026-11-08": {
+    beginner: {c:"[f:Note] [i:scrambled] into a [d:musical sound]", a:"TONE", t:"Anagram", x:"“Scrambled” tells you to rearrange NOTE. The letters make TONE, a musical sound."},
+    easy: {c:"[f:Pans] [i:flipped] with a [d:crack]", a:"SNAP", t:"Reversal", x:"“Flipped” means read PANS backwards. It gives SNAP, which is a crack."},
+    medium: {c:"[i:We hear] you can [f:see] the [d:ocean]", a:"SEA", t:"Homophone", x:"“We hear” means it sounds like another word. SEA sounds like SEE, and the sea is the ocean."},
+    hard: {c:"[f:Sailor] must [f:obtain] the [d:goal]", a:"TARGET", t:"Charade", x:"Sailor = TAR (an old word for a sailor), obtain = GET. TAR + GET = TARGET, a goal."},
+    impossible: {c:"[d:Nasty] on [d:average]", a:"MEAN", t:"Double definition", x:"Two meanings, one word. Mean can mean nasty, and the mean is the average. “On average” sounds like a figure of speech, so you don't see the second definition."},
+  },
 };
