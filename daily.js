@@ -59,4 +59,11 @@ window.TWISTY_DAILY = {
     hard: {c:"[f:Sailor] must [f:obtain] the [d:goal]", a:"TARGET", t:"Charade", x:"Sailor = TAR (an old word for a sailor), obtain = GET. TAR + GET = TARGET, a goal."},
     impossible: {c:"[d:Nasty] on [d:average]", a:"MEAN", t:"Double definition", x:"Two meanings, one word. Mean can mean nasty, and the mean is the average. “On average” sounds like a figure of speech, so you don't see the second definition."},
   },
+  "2026-11-09": {
+    beginner: {c:"[d:Big primate] [i:hiding in] [f:the grape arbor]", a:"APE", t:"Hidden word", x:"“Hiding in” means the answer is tucked inside the next words: gr(APE) arbor. An ape is a big primate."},
+    easy: {c:"[d:Fido], [i:at first], [f:digs our garden]", a:"DOG", t:"First letters", x:"“At first” means take the first letters: Digs Our Garden gives D, O, G. Fido is the classic name for a dog."},
+    medium: {c:"The [f:fog] [i:hugs] [f:a ring], leaving it [d:damp]", a:"MOIST", t:"Container", x:"Fog = MIST. A ring looks like the letter O. MIST hugs O: M(O)IST. Moist means damp."},
+    hard: {c:"[f:Writer]'s [f:label] [f:on] the [d:five-sided building]", a:"PENTAGON", t:"Charade", x:"Writer = PEN (the thing you write with), label = TAG, then ON. PEN + TAG + ON = PENTAGON, the famous five-sided building."},
+    impossible: {c:"[i:Reportedly], the [f:night] shift went to a [d:man in armor]", a:"KNIGHT", t:"Homophone", x:"“Reportedly” means it sounds like another word. KNIGHT sounds like NIGHT, and a knight is a man in armor. It reads like workplace news, so the sound-alike slips past."},
+  },
 };
