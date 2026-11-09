@@ -66,4 +66,11 @@ window.TWISTY_DAILY = {
     hard: {c:"[f:Writer]'s [f:label] [f:on] the [d:five-sided building]", a:"PENTAGON", t:"Charade", x:"Writer = PEN (the thing you write with), label = TAG, then ON. PEN + TAG + ON = PENTAGON, the famous five-sided building."},
     impossible: {c:"[i:Reportedly], the [f:night] shift went to a [d:man in armor]", a:"KNIGHT", t:"Homophone", x:"“Reportedly” means it sounds like another word. KNIGHT sounds like NIGHT, and a knight is a man in armor. It reads like workplace news, so the sound-alike slips past."},
   },
+  "2026-11-10": {
+    beginner: {c:"[f:Meal] [i:ruined]? How [d:weak]!", a:"LAME", t:"Anagram", x:"“Ruined” tells you to rearrange MEAL. The letters make LAME, which means weak, like a lame excuse."},
+    easy: {c:"[f:Lager] [i:sent back]? How [d:royal]!", a:"REGAL", t:"Reversal", x:"“Sent back” means read LAGER backwards. It gives REGAL, which means royal."},
+    medium: {c:"[d:Solid] [d:business]", a:"FIRM", t:"Double definition", x:"Two meanings, one word. Firm means solid, and a firm is a business."},
+    hard: {c:"The [f:company] [i:breaks into] a [f:ban] on [d:breakfast meat]", a:"BACON", t:"Container", x:"Company = CO. It breaks into BAN: BA(CO)N. Bacon is a breakfast meat."},
+    impossible: {c:"[f:Wheat] [i:gets topped] in the [d:warmth]", a:"HEAT", t:"Deletion", x:"“Gets topped” means its top letter comes off. WHEAT loses the W and leaves HEAT, which is warmth. It reads like a farming report, so you don't think to cut a letter."},
+  },
 };
