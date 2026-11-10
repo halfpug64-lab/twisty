@@ -73,4 +73,11 @@ window.TWISTY_DAILY = {
     hard: {c:"The [f:company] [i:breaks into] a [f:ban] on [d:breakfast meat]", a:"BACON", t:"Container", x:"Company = CO. It breaks into BAN: BA(CO)N. Bacon is a breakfast meat."},
     impossible: {c:"[f:Wheat] [i:gets topped] in the [d:warmth]", a:"HEAT", t:"Deletion", x:"“Gets topped” means its top letter comes off. WHEAT loses the W and leaves HEAT, which is warmth. It reads like a farming report, so you don't think to cut a letter."},
   },
+  "2026-11-11": {
+    beginner: {c:"[d:Drink] [i:found in] [f:the steam]", a:"TEA", t:"Hidden word", x:"“Found in” means the answer is hiding inside the next words: the s(TEA)m. Tea is a drink."},
+    easy: {c:"[d:Former soldier], [i:at first], [f:visits every town]", a:"VET", t:"First letters", x:"“At first” means take the first letters: Visits Every Town gives V, E, T. A vet is a former soldier, a good one for Veterans Day."},
+    medium: {c:"[i:Say] [f:flour] and you'll get a [d:bloom]", a:"FLOWER", t:"Homophone", x:"“Say” means it sounds like another word. FLOWER sounds like FLOUR, and a flower is a bloom."},
+    hard: {c:"[f:Not] [f:capable]? How [d:remarkable]!", a:"NOTABLE", t:"Charade", x:"Capable = ABLE. NOT + ABLE = NOTABLE, which means remarkable. It reads like a sarcastic comeback, so you don't see the words just join up."},
+    impossible: {c:"[f:Bald head] [i:hiding] [f:retirement savings]? Must be a [d:buccaneer]", a:"PIRATE", t:"Container", x:"Bald head = PATE (the top of the head). Retirement savings = IRA. PATE hides IRA: P(IRA)TE. A pirate is a buccaneer."},
+  },
 };
