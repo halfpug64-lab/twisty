@@ -80,4 +80,11 @@ window.TWISTY_DAILY = {
     hard: {c:"[f:Not] [f:capable]? How [d:remarkable]!", a:"NOTABLE", t:"Charade", x:"Capable = ABLE. NOT + ABLE = NOTABLE, which means remarkable. It reads like a sarcastic comeback, so you don't see the words just join up."},
     impossible: {c:"[f:Bald head] [i:hiding] [f:retirement savings]? Must be a [d:buccaneer]", a:"PIRATE", t:"Container", x:"Bald head = PATE (the top of the head). Retirement savings = IRA. PATE hides IRA: P(IRA)TE. A pirate is a buccaneer."},
   },
+  "2026-11-12": {
+    beginner: {c:"A [i:messy], [f:dusty] [d:den]", a:"STUDY", t:"Anagram", x:"“Messy” tells you to rearrange DUSTY. The letters make STUDY, a room like a den."},
+    easy: {c:"The [f:wolf] [i:turns back] with the [d:current]", a:"FLOW", t:"Reversal", x:"“Turns back” means read WOLF backwards. It gives FLOW, which is a current."},
+    medium: {c:"[d:Serious] at the [d:back of the ship]", a:"STERN", t:"Double definition", x:"Two meanings, one word. Stern means serious, and the stern is the back of a ship."},
+    hard: {c:"A [f:pin] [i:lost in] the [f:Southeast]? Show some [d:backbone]!", a:"SPINE", t:"Container", x:"Southeast = SE. PIN gets lost inside it: S(PIN)E. Your spine is your backbone."},
+    impossible: {c:"[f:Friends] [i:without] [f:right] are [d:demons]", a:"FIENDS", t:"Deletion", x:"Right = R. Take R out of FRIENDS and you get FIENDS, which are demons. It reads like a moral lesson, so you don't think to pull a letter out."},
+  },
 };
