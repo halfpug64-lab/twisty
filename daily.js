@@ -87,4 +87,11 @@ window.TWISTY_DAILY = {
     hard: {c:"A [f:pin] [i:lost in] the [f:Southeast]? Show some [d:backbone]!", a:"SPINE", t:"Container", x:"Southeast = SE. PIN gets lost inside it: S(PIN)E. Your spine is your backbone."},
     impossible: {c:"[f:Friends] [i:without] [f:right] are [d:demons]", a:"FIENDS", t:"Deletion", x:"Right = R. Take R out of FRIENDS and you get FIENDS, which are demons. It reads like a moral lesson, so you don't think to pull a letter out."},
   },
+  "2026-11-13": {
+    beginner: {c:"[d:Sign] [i:found among] [f:the women]", a:"OMEN", t:"Hidden word", x:"“Found among” means the answer is hiding inside the next words: the w(OMEN). An omen is a sign, fitting for Friday the 13th."},
+    easy: {c:"[f:Spiders crawling around rotten eggs], [i:at first], will [d:frighten]", a:"SCARE", t:"First letters", x:"“At first” means take the first letters: Spiders Crawling Around Rotten Eggs gives S, C, A, R, E. To scare is to frighten."},
+    medium: {c:"[i:Say] [f:which] one is the [d:spellcaster]", a:"WITCH", t:"Homophone", x:"“Say” means it sounds like another word. WITCH sounds like WHICH, and a witch is a spellcaster."},
+    hard: {c:"A [f:shoe] for the [f:family]? That's a [d:jack-o'-lantern]!", a:"PUMPKIN", t:"Charade", x:"Shoe = PUMP (a kind of heel), family = KIN. PUMP + KIN = PUMPKIN, which is what a jack-o'-lantern is carved from."},
+    impossible: {c:"[d:Swear] by the [d:hex]", a:"CURSE", t:"Double definition", x:"Two meanings, one word. To curse is to swear, and a curse is a hex. “Swear by” sounds like a phrase, so you miss that it's two definitions."},
+  },
 };
