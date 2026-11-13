@@ -94,4 +94,11 @@ window.TWISTY_DAILY = {
     hard: {c:"A [f:shoe] for the [f:family]? That's a [d:jack-o'-lantern]!", a:"PUMPKIN", t:"Charade", x:"Shoe = PUMP (a kind of heel), family = KIN. PUMP + KIN = PUMPKIN, which is what a jack-o'-lantern is carved from."},
     impossible: {c:"[d:Swear] by the [d:hex]", a:"CURSE", t:"Double definition", x:"Two meanings, one word. To curse is to swear, and a curse is a hex. “Swear by” sounds like a phrase, so you miss that it's two definitions."},
   },
+  "2026-11-14": {
+    beginner: {c:"When the [f:earth] [i:shook], I felt it in my [d:ticker]", a:"HEART", t:"Anagram", x:"“Shook” tells you to rearrange EARTH. The letters make HEART, and your ticker is your heart."},
+    easy: {c:"[f:Gum] [i:stuck upside down] on a [d:coffee cup]", a:"MUG", t:"Reversal", x:"“Upside down” means read GUM backwards. It gives MUG, a coffee cup."},
+    medium: {c:"[f:We] [i:got into] the [f:SAT] and started to [d:perspire]", a:"SWEAT", t:"Container", x:"WE gets into SAT: S(WE)AT. To sweat is to perspire, which tracks for the SAT."},
+    hard: {c:"[f:Auto] [f:noise] for [f:Al]? It's a [d:red bird]", a:"CARDINAL", t:"Charade", x:"Auto = CAR, noise = DIN, then AL. CAR + DIN + AL = CARDINAL, a red bird."},
+    impossible: {c:"[f:Cowardly] [i:after losing its head]? That's a [d:black bird]", a:"RAVEN", t:"Deletion", x:"Cowardly = CRAVEN. Take off its head, the C, and RAVEN is left, a black bird. You have to swap in a synonym before cutting, which is the trap."},
+  },
 };
