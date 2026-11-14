@@ -101,4 +101,11 @@ window.TWISTY_DAILY = {
     hard: {c:"[f:Auto] [f:noise] for [f:Al]? It's a [d:red bird]", a:"CARDINAL", t:"Charade", x:"Auto = CAR, noise = DIN, then AL. CAR + DIN + AL = CARDINAL, a red bird."},
     impossible: {c:"[f:Cowardly] [i:after losing its head]? That's a [d:black bird]", a:"RAVEN", t:"Deletion", x:"Cowardly = CRAVEN. Take off its head, the C, and RAVEN is left, a black bird. You have to swap in a synonym before cutting, which is the trap."},
   },
+  "2026-11-15": {
+    beginner: {c:"[d:Lion's home] [i:inside] [f:the garden]", a:"DEN", t:"Hidden word", x:"“Inside” means the answer is hiding in the next words: the gar(DEN). A den is a lion's home."},
+    easy: {c:"[d:Roll] [i:started by] [f:bakers using nutmeg]", a:"BUN", t:"First letters", x:"“Started by” means take the first letters: Bakers Using Nutmeg gives B, U, N. A bun is a roll."},
+    medium: {c:"[i:Say] you [f:ate] a [d:number]", a:"EIGHT", t:"Homophone", x:"“Say” means it sounds like another word. EIGHT sounds like ATE, and eight is a number."},
+    hard: {c:"[f:Me], [i:tucked in] a [f:camp bed], watching a [d:shooting star]", a:"COMET", t:"Container", x:"Camp bed = COT. ME gets tucked inside: CO(ME)T. A comet looks like a shooting star."},
+    impossible: {c:"[d:Long] for a [d:conifer]", a:"PINE", t:"Double definition", x:"Two meanings, one word. To pine is to long for something, and a pine is a conifer. It reads like “wishing for a tree,” which hides the two definitions."},
+  },
 };
