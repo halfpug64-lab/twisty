@@ -108,4 +108,11 @@ window.TWISTY_DAILY = {
     hard: {c:"[f:Me], [i:tucked in] a [f:camp bed], watching a [d:shooting star]", a:"COMET", t:"Container", x:"Camp bed = COT. ME gets tucked inside: CO(ME)T. A comet looks like a shooting star."},
     impossible: {c:"[d:Long] for a [d:conifer]", a:"PINE", t:"Double definition", x:"Two meanings, one word. To pine is to long for something, and a pine is a conifer. It reads like “wishing for a tree,” which hides the two definitions."},
   },
+  "2026-11-16": {
+    beginner: {c:"[d:Final] [f:salt] [i:shaker]", a:"LAST", t:"Anagram", x:"“Shaker” tells you to shake up SALT. The letters make LAST, which means final."},
+    easy: {c:"Going [f:nuts] [i:in reverse] can [d:daze] you", a:"STUN", t:"Reversal", x:"“In reverse” means read NUTS backwards. It gives STUN, which means daze."},
+    medium: {c:"[f:Bug] on the [f:hem] during the [d:national song]", a:"ANTHEM", t:"Charade", x:"Bug = ANT, then HEM. ANT + HEM = ANTHEM, a national song."},
+    hard: {c:"[f:Cheating] [i:ruined] her [d:career in the classroom]", a:"TEACHING", t:"Anagram", x:"“Ruined” tells you to rearrange CHEATING. The letters make TEACHING, a career in the classroom. It reads like a news headline, which hides the anagram."},
+    impossible: {c:"[f:Happy] one [i:loses his head], leaving just a [d:boy]", a:"LAD", t:"Deletion", x:"Happy = GLAD. Take off its head, the G, and LAD is left, which is a boy. You have to swap in the synonym before you cut, which is the trap."},
+  },
 };
