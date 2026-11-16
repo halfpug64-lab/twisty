@@ -115,4 +115,11 @@ window.TWISTY_DAILY = {
     hard: {c:"[f:Cheating] [i:ruined] her [d:career in the classroom]", a:"TEACHING", t:"Anagram", x:"“Ruined” tells you to rearrange CHEATING. The letters make TEACHING, a career in the classroom. It reads like a news headline, which hides the anagram."},
     impossible: {c:"[f:Happy] one [i:loses his head], leaving just a [d:boy]", a:"LAD", t:"Deletion", x:"Happy = GLAD. Take off its head, the G, and LAD is left, which is a boy. You have to swap in the synonym before you cut, which is the trap."},
   },
+  "2026-11-17": {
+    beginner: {c:"[d:Seabird] [i:caught in] a [f:pattern]", a:"TERN", t:"Hidden word", x:"“Caught in” means the answer is hiding inside the next word: pat(TERN). A tern is a seabird."},
+    easy: {c:"[d:Vehicle] [i:at the front of] [f:carpool and rental]", a:"CAR", t:"First letters", x:"“At the front of” means take the first letters: Carpool And Rental gives C, A, R. A car is a vehicle."},
+    medium: {c:"[i:Say] [f:hi] to the [d:tall] guy", a:"HIGH", t:"Homophone", x:"“Say” means it sounds like another word. HIGH sounds like HI, and high means tall."},
+    hard: {c:"[f:He] [i:hides inside] the [f:cat] costume to [d:con] us", a:"CHEAT", t:"Container", x:"HE hides inside CAT: C(HE)AT. To cheat is to con. The surface paints a silly picture so you don't spot the letters."},
+    impossible: {c:"[d:Guide] to [d:pencil filler]", a:"LEAD", t:"Double definition", x:"Two meanings, one word. To lead is to guide, and lead (said like “led”) is what fills a pencil. It reads like the title of a how-to book."},
+  },
 };
