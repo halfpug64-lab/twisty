@@ -122,4 +122,11 @@ window.TWISTY_DAILY = {
     hard: {c:"[f:He] [i:hides inside] the [f:cat] costume to [d:con] us", a:"CHEAT", t:"Container", x:"HE hides inside CAT: C(HE)AT. To cheat is to con. The surface paints a silly picture so you don't spot the letters."},
     impossible: {c:"[d:Guide] to [d:pencil filler]", a:"LEAD", t:"Double definition", x:"Two meanings, one word. To lead is to guide, and lead (said like “led”) is what fills a pencil. It reads like the title of a how-to book."},
   },
+  "2026-11-18": {
+    beginner: {c:"[d:Arm joint] [i:bent] [f:below]", a:"ELBOW", t:"Anagram", x:"“Bent” tells you to rearrange BELOW. The letters make ELBOW, an arm joint. Fitting, since elbows bend."},
+    easy: {c:"[f:Pals] [i:turning around] for a [d:smack]", a:"SLAP", t:"Reversal", x:"“Turning around” means read PALS backwards. It gives SLAP, a smack."},
+    medium: {c:"[d:Student] [d:in your eye]", a:"PUPIL", t:"Double definition", x:"Two meanings, one word. A pupil is a student, and the pupil is the dark center of your eye."},
+    hard: {c:"Want [f:to] [f:get] [f:her]? Work [d:as a team]", a:"TOGETHER", t:"Charade", x:"Just join the words: TO + GET + HER = TOGETHER, which means as a team. The surface sounds like dating advice, so you don't see the words simply glue up."},
+    impossible: {c:"[f:Bold] one [i:loses his head] and starts to [d:rant]", a:"RAVE", t:"Deletion", x:"Bold = BRAVE. Take off its head, the B, and RAVE is left, which means rant. You have to swap in the synonym before cutting, which is the trap."},
+  },
 };
