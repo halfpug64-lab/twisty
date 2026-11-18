@@ -129,4 +129,11 @@ window.TWISTY_DAILY = {
     hard: {c:"Want [f:to] [f:get] [f:her]? Work [d:as a team]", a:"TOGETHER", t:"Charade", x:"Just join the words: TO + GET + HER = TOGETHER, which means as a team. The surface sounds like dating advice, so you don't see the words simply glue up."},
     impossible: {c:"[f:Bold] one [i:loses his head] and starts to [d:rant]", a:"RAVE", t:"Deletion", x:"Bold = BRAVE. Take off its head, the B, and RAVE is left, which means rant. You have to swap in the synonym before cutting, which is the trap."},
   },
+  "2026-11-19": {
+    beginner: {c:"[d:Fish] [i:swimming in] [f:the elegant] pond", a:"EEL", t:"Hidden word", x:"“Swimming in” means the answer is hiding inside the next words: th(E EL)egant. An eel is a fish."},
+    easy: {c:"[f:Hold us gently], [i:at first], for a [d:squeeze]", a:"HUG", t:"First letters", x:"“At first” means take the first letters: Hold Us Gently gives H, U, G. A hug is a squeeze."},
+    medium: {c:"[d:Hotel rooms], [i:it sounds like], are [f:sweet]", a:"SUITE", t:"Homophone", x:"“It sounds like” means a sound-alike. SUITE sounds like SWEET, and a suite is a set of hotel rooms."},
+    hard: {c:"The [f:UN] [i:stuck in] a [f:pod]? Head to the [d:dog shelter]", a:"POUND", t:"Container", x:"UN goes inside POD: PO(UN)D. A pound is a dog shelter."},
+    impossible: {c:"[f:Sing without words] about a [f:pest]? [d:Nonsense]!", a:"HUMBUG", t:"Charade", x:"Sing without words = HUM, pest = BUG. HUM + BUG = HUMBUG, which means nonsense. It reads like a grumpy complaint, so the pieces hide in plain sight."},
+  },
 };
